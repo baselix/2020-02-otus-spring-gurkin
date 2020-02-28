@@ -4,11 +4,18 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+    	<property name="locations" value="classpath:/application.properties"/>
+	</bean>
+
 	<bean id="userInterfaceService" class="ru.gurkin.spring.usertesting.service.impl.UserInterfaceServiceImpl"/>
 	<bean id="testServiceDao" class="ru.gurkin.spring.usertesting.dao.impl.TestServiceTestDaoImpl"/>
+	<bean id="imaginationTestServiceDao" class="ru.gurkin.spring.usertesting.dao.impl.CSVImaginationTestServiceDaoImpl">
+		<constructor-arg name="fileName" value="${resources.test-file-name}"/>
+	</bean>
     
     <bean id="userTestingService" class="ru.gurkin.spring.usertesting.service.impl.UserTestingServiceImpl">
         <constructor-arg name="userInterfaceService" ref="userInterfaceService"/>
-        <constructor-arg name="testService" ref="testServiceDao"/>
+        <constructor-arg name="testService" ref="imaginationTestServiceDao"/>
     </bean>
 </beans>
