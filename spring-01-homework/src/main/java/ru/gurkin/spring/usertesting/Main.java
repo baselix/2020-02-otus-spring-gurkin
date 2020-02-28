@@ -4,7 +4,6 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import ru.gurkin.spring.usertesting.service.UserTestingService;
 
-
 public class Main {
 
     public static void main(String[] args) {

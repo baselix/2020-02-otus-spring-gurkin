@@ -3,6 +3,8 @@
  */
 package ru.gurkin.spring.usertesting.service;
 
+import java.util.List;
+
 /**
  * @author digurkin
  * 
@@ -32,7 +34,7 @@ public interface UserInterfaceService {
 	 * @param templateString - строка шаблона. содержит допустимые ответы пользователя, разделенные '|'
 	 * @return userInput
 	 */
-	String getTemplatedUserInput(String templateString);
+	String getTemplatedUserInput(List<String> templateStrings);
 	
 	/**
 	 * Метод, отображающий пользователю переданную в него строку
