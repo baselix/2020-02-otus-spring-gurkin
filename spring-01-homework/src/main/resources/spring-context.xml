@@ -8,14 +8,16 @@
     	<property name="locations" value="classpath:/application.properties"/>
 	</bean>
 
-	<bean id="userInterfaceService" class="ru.gurkin.spring.usertesting.service.impl.UserInterfaceServiceImpl"/>
-	<bean id="testServiceDao" class="ru.gurkin.spring.usertesting.dao.impl.TestServiceTestDaoImpl"/>
-	<bean id="imaginationTestServiceDao" class="ru.gurkin.spring.usertesting.dao.impl.CSVImaginationTestServiceDaoImpl">
+	<bean id="userInterfaceService" class="ru.gurkin.spring.usertesting.service.impl.UserInterfaceServiceImpl" destroy-method="destroy">
+		<constructor-arg name="encoding" value="${console.encoding}"/>
+	</bean>
+	<bean id="turnerTestServiceDao" class="ru.gurkin.spring.usertesting.dao.impl.TurnerTestServiceDaoImpl"/>
+	<bean id="csvTestServiceDao" class="ru.gurkin.spring.usertesting.dao.impl.CSVTestServiceDaoImpl">
 		<constructor-arg name="fileName" value="${resources.test-file-name}"/>
 	</bean>
     
     <bean id="userTestingService" class="ru.gurkin.spring.usertesting.service.impl.UserTestingServiceImpl">
         <constructor-arg name="userInterfaceService" ref="userInterfaceService"/>
-        <constructor-arg name="testService" ref="imaginationTestServiceDao"/>
+        <constructor-arg name="testService" ref="csvTestServiceDao"/>
     </bean>
 </beans>

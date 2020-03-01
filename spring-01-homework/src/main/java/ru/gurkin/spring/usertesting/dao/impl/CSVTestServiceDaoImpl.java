@@ -17,11 +17,12 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 
 import com.google.common.base.Splitter;
-import com.google.common.base.Strings;
 import com.google.common.collect.Lists;
 
-import ru.gurkin.spring.usertesting.dao.TestServiceDao;
 import ru.gurkin.spring.usertesting.model.Question;
+import ru.gurkin.spring.usertesting.model.Result;
+import ru.gurkin.spring.usertesting.model.ResultValue;
+import ru.gurkin.spring.usertesting.model.TestResults;
 import ru.gurkin.spring.usertesting.model.UserTest;
 
 /**
@@ -29,16 +30,21 @@ import ru.gurkin.spring.usertesting.model.UserTest;
  *
  * Сервис получения данных из файл .csv о тесте пользователей на воображение
  */
-public class CSVImaginationTestServiceDaoImpl implements TestServiceDao{
+public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 
+	private static final String FILE_NOT_FOUND_TEMPLATE = "Файл с названием %s не найден";
+	
 	private static final String GREETING = "greeting";
 	private static final String FAREWELL = "fareweel";
 	private static final String QUESTION = "question";
+	private static final String RESULT = "result";
+	private static final String RESULT_VALUE = "resultValue";
 	private static final char SEPARATOR = ';';
+	private static final String ANSWER_OPTIONS_SEPARATOR = "|";
 	
 	private String fileName;
 
-	public CSVImaginationTestServiceDaoImpl(String fileName) {
+	public CSVTestServiceDaoImpl(String fileName) {
 		this.fileName = fileName;
 	}
 	
@@ -48,10 +54,14 @@ public class CSVImaginationTestServiceDaoImpl implements TestServiceDao{
 		List<Question> questions = Lists.newArrayList();
 		String greetingString = null;
 		String fareweelString = null;
+
+		List<Result> results =  Lists.newArrayList();
+		List<ResultValue> resultValues = Lists.newArrayList();
+		TestResults testResults = new TestResults(results, resultValues);
 		
 		Resource resource = new ClassPathResource(fileName);
 		if(!resource.exists()) {
-			throw new IllegalArgumentException(String.format("Файл с названием %s не найден", fileName));
+			throw new IllegalArgumentException(String.format(FILE_NOT_FOUND_TEMPLATE, fileName));
 		}
 		
 		try (CSVParser csvParser = new CSVParser(new BufferedReader(new InputStreamReader(resource.getInputStream(), "UTF-8")), CSVFormat.newFormat(SEPARATOR))){
@@ -66,9 +76,37 @@ public class CSVImaginationTestServiceDaoImpl implements TestServiceDao{
 							question.setQuestion(iterator.next());
 						}
 						if(iterator.hasNext()) {
-							question.setAnswerOptions(Splitter.on("|").splitToList(iterator.next()));
+							question.setAnswerOptions(Splitter.on(ANSWER_OPTIONS_SEPARATOR).splitToList(iterator.next()));
 						}
 						questions.add(question);
+						break;
+						
+					case RESULT:
+						Result result = new Result("", 0, Integer.MAX_VALUE);
+						if(iterator.hasNext()) {
+							int lowerBorder = Integer.parseInt(iterator.next());
+							result.setLowerBorder(lowerBorder);
+						}
+						if(iterator.hasNext()) {
+							int upperBorder = Integer.parseInt(iterator.next());
+							result.setUpperBorder(upperBorder);
+						}
+						if(iterator.hasNext()) {
+							result.setResultString(iterator.next());
+						}
+						results.add(result);
+						break;
+						
+					case RESULT_VALUE:
+						ResultValue value = new ResultValue("", 0);
+						if(iterator.hasNext()) {
+							value.setResultString(iterator.next());
+						}
+						if(iterator.hasNext()) {
+							int points = Integer.parseInt(iterator.next());
+							value.setPoints(points);
+						}
+						resultValues.add(value);
 						break;
 						
 					case GREETING:
@@ -90,38 +128,6 @@ public class CSVImaginationTestServiceDaoImpl implements TestServiceDao{
 			e.printStackTrace();
 		}
 		
-		return new UserTest(greetingString, questions, fareweelString, null, null);
+		return new UserTest(greetingString, questions, fareweelString, null, null, testResults);
 	}
-
-	@Override
-	public UserTest testResultsProcessing(UserTest test) {
-		int resultSumm = 0;
-		for(Question question : test.getQuestions()) {
-			if(!Strings.isNullOrEmpty(question.getAnswer())) {
-				String answer = question.getAnswer();
-				switch (answer) {
-					case "да":
-						resultSumm += 2;
-						break;
-					case "незнаю":
-						resultSumm += 1;
-						break;
-					case "нет":
-					default:
-						break;
-				}
-			}
-		}
-		String result;
-		if(resultSumm >= 27 && resultSumm <= 40) {
-			result = "Вы живете в фантастическом мире, исключительно богатом деталями. \"Спускаясь на землю\", Вы оказываетесь на чужой территории.";
-		}else if(resultSumm >= 13 && resultSumm <= 26) {
-			result = "У Вас случаются отдельные вспышки интуиции. Но Ваша фантазия находится в зависимости от настроения.";
-		}else {
-			result = "Ваши отличительные черты -\"приземленность\" и прагматичность. Опираясь на твердую почву, Вы не можете от нее оторваться, а потому почти лишены дара предвидения.";
-		}
-		test.setTestResult(result);
-		return test;
-	}
-
 }

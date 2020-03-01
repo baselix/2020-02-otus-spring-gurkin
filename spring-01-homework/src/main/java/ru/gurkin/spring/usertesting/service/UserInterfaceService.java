@@ -41,4 +41,10 @@ public interface UserInterfaceService {
 	 * @param displayString - строка для отображения пользователю
 	 */
 	void displayToUser(String displayString);
+	
+	/**
+	 * Метод, отображающий пользователю разделительную строку
+	 * 
+	 */
+	void displayDividingLineToUser();
 }

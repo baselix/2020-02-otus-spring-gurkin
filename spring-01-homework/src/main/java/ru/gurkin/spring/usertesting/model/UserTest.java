@@ -15,7 +15,7 @@ import lombok.experimental.SuperBuilder;
 /**
  * @author digurkin
  *
- * Тест
+ * Класс содержит данные теста: вопросы, строки приветствия и прощания, данные для вычисления результатов.
  */
 @Data
 @SuperBuilder
@@ -29,4 +29,6 @@ public class UserTest {
 	private String fareweel;
 	private User user;
 	private String testResult;
+	@NonNull
+	private TestResults testResults;
 }

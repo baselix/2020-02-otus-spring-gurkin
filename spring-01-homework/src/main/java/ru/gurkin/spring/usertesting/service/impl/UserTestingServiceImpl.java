@@ -19,6 +19,8 @@ import ru.gurkin.spring.usertesting.service.UserTestingService;
  */
 public class UserTestingServiceImpl implements UserTestingService{
 	
+	private static final String GREETING = "Доброго времени суток";
+	private static final String RESULT_TEMPLATE = "Уважаемый %s, ваш результат: %s";
 	private static final String COPYRIGHT = "© Дмитрий Гуркин, 2020";
 
 	private final UserInterfaceService userInterfaceService;
@@ -33,10 +35,7 @@ public class UserTestingServiceImpl implements UserTestingService{
 	public void startTesting() {
 		UserTest test = testService.getUserTest();
 		
-		String userName = userInterfaceService.getUserName();
-		String userSoname = userInterfaceService.getUserSoname();
-		
-		test.setUser(new User(userName, userSoname));
+		test.setUser(getUserData());
 		
 		displayGreeting(test.getGreeting());
 		doTesting(test);
@@ -44,17 +43,29 @@ public class UserTestingServiceImpl implements UserTestingService{
 		displayFareweel(test.getFareweel());
 	}
 	
+	private User getUserData() {
+		userInterfaceService.displayDividingLineToUser();
+		userInterfaceService.displayToUser(GREETING);
+		String userName = userInterfaceService.getUserName();
+		String userSoname = userInterfaceService.getUserSoname();
+		return new User(userName, userSoname);
+	}
+	
 	private void displayGreeting(String greeting) {
+		userInterfaceService.displayDividingLineToUser();
 		userInterfaceService.displayToUser(greeting);
 	}
 	
 	private void displayFareweel(String fareweel) {
+		userInterfaceService.displayDividingLineToUser();
 		userInterfaceService.displayToUser(fareweel);
 		userInterfaceService.displayToUser(COPYRIGHT);
+		userInterfaceService.displayDividingLineToUser();
 	}
 	
 	private void doTesting(UserTest test) {
 		for(Question question : test.getQuestions()) {
+			userInterfaceService.displayDividingLineToUser();
 			userInterfaceService.displayToUser(question.getQuestion());
 			if(question.getAnswerOptions() != null && !question.getAnswerOptions().isEmpty()) {
 				question.setAnswer(userInterfaceService.getTemplatedUserInput(question.getAnswerOptions()));
@@ -67,7 +78,8 @@ public class UserTestingServiceImpl implements UserTestingService{
 	private void displayTestingResults(UserTest test) {
 		UserTest processedTest = testService.testResultsProcessing(test);
 		if(!Strings.isNullOrEmpty(processedTest.getTestResult())){
-			userInterfaceService.displayToUser(String.format("%s, ваш результат: %s", processedTest.getUser().getUserName(), processedTest.getTestResult()));
+			userInterfaceService.displayDividingLineToUser();
+			userInterfaceService.displayToUser(String.format(RESULT_TEMPLATE, processedTest.getUser().getUserName(), processedTest.getTestResult()));
 		}
 	}
 }
