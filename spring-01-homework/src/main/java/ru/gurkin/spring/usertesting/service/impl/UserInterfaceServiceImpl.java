@@ -19,6 +19,8 @@ import ru.gurkin.spring.usertesting.service.UserInterfaceService;
 
 /**
  * @author digurkin
+ * 
+ * Класс для взаимодействия с пользователем посредством консоли
  */
 public class UserInterfaceServiceImpl implements UserInterfaceService{
 
