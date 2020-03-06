@@ -1,0 +1,9 @@
+Файл для тестирования
+question;question;y|n
+question;question
+greeting;greeting
+fareweel;fareweel
+result;1;1;result1
+result;2;100;result2
+resultValue;y;1
+resultValue;n;0
