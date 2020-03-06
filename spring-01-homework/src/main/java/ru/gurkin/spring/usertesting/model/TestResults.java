@@ -5,8 +5,11 @@ package ru.gurkin.spring.usertesting.model;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -24,7 +27,9 @@ import lombok.experimental.SuperBuilder;
 @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public class TestResults {
 	@NonNull
-	private List<Result> results;
+	@Builder.Default
+	private List<Result> results = Lists.newArrayList();
 	@NonNull
-	private List<ResultValue> resultValues;
+	@Builder.Default
+	private List<ResultValue> resultValues = Lists.newArrayList();
 }

@@ -44,7 +44,7 @@ public class TurnerTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 					new ResultValue("5", 5), 
 					new ResultValue("6", 6)
 				));
-		return new UserTest(GREETING, questions, FAREWELL, null, null, testResults);
+		return new UserTest(GREETING, FAREWELL, questions, testResults, null, null);
 	}
 
 }
