@@ -40,8 +40,8 @@ public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 	private static final String ANSWER_OPTIONS_SEPARATOR = "|";
 	private static final String EMPTY_STRING = "";
 	
-	public static final String RESOURCE_ENCODING = "UTF-8";
-	public static final char SEPARATOR = ';';
+	public static final String DEFAULT_RESOURCE_ENCODING = "UTF-8";
+	public static final char DEFAULT_SEPARATOR = ';';
 	
 	private final String fileName;
 	private final String resourceEncoding;
@@ -50,7 +50,7 @@ public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 	public CSVTestServiceDaoImpl(String fileName, String resourceEncoding, char separator) {
 		this.fileName = fileName;
 		if(Strings.isNullOrEmpty(resourceEncoding)) {
-			this.resourceEncoding = RESOURCE_ENCODING;
+			this.resourceEncoding = DEFAULT_RESOURCE_ENCODING;
 		}else {
 			this.resourceEncoding = resourceEncoding;
 		}
@@ -58,27 +58,29 @@ public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 	}
 	
 	public CSVTestServiceDaoImpl(String fileName, String resourceEncoding) {
-		this(fileName, resourceEncoding, SEPARATOR);
+		this(fileName, resourceEncoding, DEFAULT_SEPARATOR);
 	}
 	
 	public CSVTestServiceDaoImpl(String fileName) {
-		this(fileName, RESOURCE_ENCODING, SEPARATOR);
+		this(fileName, DEFAULT_RESOURCE_ENCODING, DEFAULT_SEPARATOR);
 	}
 	
 	@Override
 	public UserTest getUserTest() {
+		return readTestData(getResource(fileName), separator, resourceEncoding);
+	}
+	
+	private Resource getResource(String fileName) {
 		Resource resource = new ClassPathResource(fileName);
 		if(!resource.exists()) {
 			throw new IllegalArgumentException(String.format(FILE_NOT_FOUND_TEMPLATE, fileName));
 		}
-		
-		return readTestData(resource, separator, resourceEncoding);
+		return resource;
 	}
 	
 	private UserTest readTestData(Resource resource, char separator, String encoding) {
 		UserTest userTest = new UserTest();
-		
-		try (CSVParser csvParser = new CSVParser(new BufferedReader(new InputStreamReader(resource.getInputStream(), "UTF-8")), CSVFormat.newFormat(SEPARATOR))){
+		try (CSVParser csvParser = new CSVParser(new BufferedReader(new InputStreamReader(resource.getInputStream(), "UTF-8")), CSVFormat.newFormat(DEFAULT_SEPARATOR))){
 			for (CSVRecord csvRecord : csvParser) {
 				Iterator<String> iterator = csvRecord.iterator();
 				if(iterator.hasNext()) {
