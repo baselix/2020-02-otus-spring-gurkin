@@ -14,7 +14,6 @@ import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
@@ -32,7 +31,6 @@ import ru.gurkin.spring.usertesting.model.UserTest;
  *
  * Сервис получения данных теста из файла .csv 
  */
-@PropertySource("classpath:application.properties")
 @Service
 public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 

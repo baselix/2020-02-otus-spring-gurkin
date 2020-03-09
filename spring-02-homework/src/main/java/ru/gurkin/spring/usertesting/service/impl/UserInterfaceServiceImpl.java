@@ -12,7 +12,6 @@ import java.util.Scanner;
 import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Joiner;
@@ -26,7 +25,6 @@ import ru.gurkin.spring.usertesting.service.UserInterfaceService;
  * 
  * Класс для взаимодействия с пользователем посредством консоли
  */
-@PropertySource("classpath:application.properties")
 @Service
 public class UserInterfaceServiceImpl implements UserInterfaceService{
 
