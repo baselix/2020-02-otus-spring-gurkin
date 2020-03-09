@@ -11,6 +11,7 @@ import ru.gurkin.spring.usertesting.dao.TestServiceDao;
 import ru.gurkin.spring.usertesting.model.Question;
 import ru.gurkin.spring.usertesting.model.User;
 import ru.gurkin.spring.usertesting.model.UserTest;
+import ru.gurkin.spring.usertesting.service.I18nService;
 import ru.gurkin.spring.usertesting.service.UserInterfaceService;
 import ru.gurkin.spring.usertesting.service.UserTestingService;
 
@@ -22,16 +23,18 @@ import ru.gurkin.spring.usertesting.service.UserTestingService;
 @Service
 public class UserTestingServiceImpl implements UserTestingService{
 	
-	private static final String GREETING = "Доброго времени суток";
-	private static final String RESULT_TEMPLATE = "Уважаемый %s, ваш результат: %s";
-	private static final String COPYRIGHT = "© Дмитрий Гуркин, 2020";
+	private static final String GREETING = "application.greeting";
+	private static final String RESULT_TEMPLATE = "application.result-template";
+	private static final String COPYRIGHT = "application.copyright";
 
 	private final UserInterfaceService userInterfaceService;
 	private final TestServiceDao testService;
+	private final I18nService i18nService;
 	
-	public UserTestingServiceImpl(UserInterfaceService userInterfaceService, TestServiceDao testService) {
+	public UserTestingServiceImpl(UserInterfaceService userInterfaceService, TestServiceDao testService, I18nService i18nService) {
 		this.userInterfaceService = userInterfaceService;
 		this.testService = testService;
+		this.i18nService = i18nService;
 	}
 	
 	@Override
@@ -48,7 +51,7 @@ public class UserTestingServiceImpl implements UserTestingService{
 	
 	private User getUserData() {
 		userInterfaceService.displayDividingLineToUser();
-		userInterfaceService.displayToUser(GREETING);
+		userInterfaceService.displayToUser(i18nService.getMessage(GREETING));
 		String userName = userInterfaceService.getUserName();
 		String userSoname = userInterfaceService.getUserSoname();
 		return new User(userName, userSoname);
@@ -62,7 +65,7 @@ public class UserTestingServiceImpl implements UserTestingService{
 	private void displayFareweel(String fareweel) {
 		userInterfaceService.displayDividingLineToUser();
 		userInterfaceService.displayToUser(fareweel);
-		userInterfaceService.displayToUser(COPYRIGHT);
+		userInterfaceService.displayToUser(i18nService.getMessage(COPYRIGHT));
 		userInterfaceService.displayDividingLineToUser();
 	}
 	
@@ -82,7 +85,7 @@ public class UserTestingServiceImpl implements UserTestingService{
 		UserTest processedTest = testService.testResultsProcessing(test);
 		if(!Strings.isNullOrEmpty(processedTest.getTestResult())){
 			userInterfaceService.displayDividingLineToUser();
-			userInterfaceService.displayToUser(String.format(RESULT_TEMPLATE, processedTest.getUser().getUserName(), processedTest.getTestResult()));
+			userInterfaceService.displayToUser(i18nService.getMessage(RESULT_TEMPLATE, new Object[] {processedTest.getUser().getUserName(), processedTest.getTestResult()}));
 		}
 	}
 }

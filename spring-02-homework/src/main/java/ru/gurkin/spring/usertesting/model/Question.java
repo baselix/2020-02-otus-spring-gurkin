@@ -2,8 +2,11 @@ package ru.gurkin.spring.usertesting.model;
 
 import java.util.List;
 
+import com.google.common.collect.Lists;
+
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.NonNull;
@@ -21,6 +24,7 @@ import lombok.experimental.SuperBuilder;
 public class Question {
 	@NonNull
 	private String question;
-	private List<String> answerOptions;
+	@Builder.Default
+	private List<String> answerOptions = Lists.newArrayList();
 	private String answer;
 }

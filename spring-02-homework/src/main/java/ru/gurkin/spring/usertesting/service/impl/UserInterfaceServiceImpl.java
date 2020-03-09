@@ -18,6 +18,7 @@ import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 
+import ru.gurkin.spring.usertesting.service.I18nService;
 import ru.gurkin.spring.usertesting.service.UserInterfaceService;
 
 /**
@@ -33,14 +34,17 @@ public class UserInterfaceServiceImpl implements UserInterfaceService{
 	
 	private String systemEncoding;
 	
-	private static final String GET_NAME_STRING = "Введите ваше имя:";
-	private static final String GET_SONAME_STRING = "Введите вашу фамилию:";
-	private static final String WRONG_ANSWER_TEMPLATE = "Недопустимое значение(%s). Выберите один из предложенных вариантов: %s";
-	private static final String EMPTY_ANSWER_STRING = "Необходимо ввести хоть что-то. Попробуйте еще раз.";
-	private static final String ANSWER_OPTIONS_TEMPLATE = "Возможные варианты ответа: %s";
-	private static final String DIVIDING_LINE = "---------------------------------";
+	private static final String GET_NAME_STRING = "application.get-name-string";
+	private static final String GET_SONAME_STRING = "application.get-soname-string";
+	private static final String WRONG_ANSWER_TEMPLATE = "application.wrong-answer-template";
+	private static final String EMPTY_ANSWER_STRING = "application.empty-answer-string";
+	private static final String ANSWER_OPTIONS_TEMPLATE = "application.answer-options-template";
+	private static final String DIVIDING_LINE = "application.dividing-line";
 	
-	public UserInterfaceServiceImpl(@Value("${console.encoding}")String encoding) {
+	private final I18nService i18nService;
+	
+	public UserInterfaceServiceImpl(@Value("${console.encoding}")String encoding, I18nService i18nService) {
+		this.i18nService = i18nService;
 		try {
 			this.systemEncoding = System.getProperty("console.encoding", encoding);
 			this.scanner = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
@@ -52,13 +56,13 @@ public class UserInterfaceServiceImpl implements UserInterfaceService{
 	
 	@Override
 	public String getUserName() {
-		displayToUser(GET_NAME_STRING);
+		displayToUser(i18nService.getMessage(GET_NAME_STRING));
 		return getUserInput();
 	}
 
 	@Override
 	public String getUserSoname() {
-		displayToUser(GET_SONAME_STRING);
+		displayToUser(i18nService.getMessage(GET_SONAME_STRING));
 		return getUserInput();
 	}
 
@@ -67,7 +71,7 @@ public class UserInterfaceServiceImpl implements UserInterfaceService{
 		String result = scanner.nextLine();
 		if(Strings.isNullOrEmpty(result)) {
 			do {
-				displayToUser(EMPTY_ANSWER_STRING);
+				displayToUser(i18nService.getMessage(EMPTY_ANSWER_STRING));
 				result = scanner.nextLine();
 			}while(Strings.isNullOrEmpty(result));
 		}
@@ -82,11 +86,11 @@ public class UserInterfaceServiceImpl implements UserInterfaceService{
 	@Override
 	public String getTemplatedUserInput(List<String> templateStrings) {
 		String templateString = Joiner.on(", ").join(templateStrings);
-		displayToUser(String.format(ANSWER_OPTIONS_TEMPLATE, templateString));
+		displayToUser(i18nService.getMessage(ANSWER_OPTIONS_TEMPLATE, new Object[] {templateString}));
 		String result = getUserInput();
 		if(!isRightInput(result, templateStrings)) {
 			do {
-				displayToUser(String.format(WRONG_ANSWER_TEMPLATE, result, templateString));
+				displayToUser(i18nService.getMessage(WRONG_ANSWER_TEMPLATE, new Object[] {result, templateString}));
 				result = getUserInput();
 			}while(!isRightInput(result, templateStrings));
 		}
@@ -110,7 +114,7 @@ public class UserInterfaceServiceImpl implements UserInterfaceService{
 
 	@Override
 	public void displayDividingLineToUser() {
-		displayToUser(DIVIDING_LINE);
+		displayToUser(i18nService.getMessage(DIVIDING_LINE));
 	}
 	
 	public void destroy() {

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.Iterator;
+import java.util.List;
 
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
@@ -25,6 +26,7 @@ import ru.gurkin.spring.usertesting.model.Question;
 import ru.gurkin.spring.usertesting.model.Result;
 import ru.gurkin.spring.usertesting.model.ResultValue;
 import ru.gurkin.spring.usertesting.model.UserTest;
+import ru.gurkin.spring.usertesting.service.I18nService;
 
 /**
  * @author digurkin
@@ -50,7 +52,10 @@ public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 	private final String fileName;
 	private final String resourceEncoding;
 	private final char separator;
-
+	
+	@Autowired
+	private I18nService i18nService;
+	
 	public CSVTestServiceDaoImpl(String fileName, String resourceEncoding, char separator) {
 		this.fileName = fileName;
 		if(Strings.isNullOrEmpty(resourceEncoding)) {
@@ -127,10 +132,13 @@ public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 	private Question readQuestion(Iterator<String> iterator) {
 		Question question = new Question();
 		if(iterator.hasNext()) {
-			question.setQuestion(iterator.next());
+			question.setQuestion(i18nService.getMessage(iterator.next()));
 		}
 		if(iterator.hasNext()) {
-			question.setAnswerOptions(Splitter.on(ANSWER_OPTIONS_SEPARATOR).splitToList(iterator.next()));
+			List<String> options = Splitter.on(ANSWER_OPTIONS_SEPARATOR).splitToList(iterator.next());
+			for(String option : options) {
+				question.getAnswerOptions().add(i18nService.getMessage(option));
+			}
 		}
 		return question;
 	}
@@ -146,7 +154,7 @@ public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 			result.setUpperBorder(upperBorder);
 		}
 		if(iterator.hasNext()) {
-			result.setResultString(iterator.next());
+			result.setResultString(i18nService.getMessage(iterator.next()));
 		}
 		return result;
 	}
@@ -154,7 +162,7 @@ public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 	private ResultValue readResultValue(Iterator<String> iterator) {
 		ResultValue value = new ResultValue(EMPTY_STRING, 0);
 		if(iterator.hasNext()) {
-			value.setResultString(iterator.next());
+			value.setResultString(i18nService.getMessage(iterator.next()));
 		}
 		if(iterator.hasNext()) {
 			int points = Integer.parseInt(iterator.next());
@@ -164,10 +172,10 @@ public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 	}
 	
 	private String readGreeting(Iterator<String> iterator) {
-		return iterator.next();
+		return i18nService.getMessage(iterator.next());
 	}
 	
 	private String readFareweel(Iterator<String> iterator) {
-		return iterator.next();
+		return i18nService.getMessage(iterator.next());
 	}
 }
