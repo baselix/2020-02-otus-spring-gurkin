@@ -12,8 +12,12 @@ import java.util.Iterator;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVParser;
 import org.apache.commons.csv.CSVRecord;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.core.io.Resource;
+import org.springframework.stereotype.Service;
 
 import com.google.common.base.Splitter;
 import com.google.common.base.Strings;
@@ -28,6 +32,8 @@ import ru.gurkin.spring.usertesting.model.UserTest;
  *
  * Сервис получения данных теста из файла .csv 
  */
+@PropertySource("classpath:application.properties")
+@Service
 public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 
 	private static final String FILE_NOT_FOUND_TEMPLATE = "Файл с названием %s не найден";
@@ -61,7 +67,8 @@ public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 		this(fileName, resourceEncoding, DEFAULT_SEPARATOR);
 	}
 	
-	public CSVTestServiceDaoImpl(String fileName) {
+	@Autowired
+	public CSVTestServiceDaoImpl(@Value("${resources.test-file-name}")String fileName) {
 		this(fileName, DEFAULT_RESOURCE_ENCODING, DEFAULT_SEPARATOR);
 	}
 	

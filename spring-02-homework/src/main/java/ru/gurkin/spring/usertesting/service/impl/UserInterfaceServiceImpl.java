@@ -11,6 +11,10 @@ import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Service;
+
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
@@ -22,6 +26,8 @@ import ru.gurkin.spring.usertesting.service.UserInterfaceService;
  * 
  * Класс для взаимодействия с пользователем посредством консоли
  */
+@PropertySource("classpath:application.properties")
+@Service
 public class UserInterfaceServiceImpl implements UserInterfaceService{
 
 	private Scanner scanner;
@@ -36,7 +42,7 @@ public class UserInterfaceServiceImpl implements UserInterfaceService{
 	private static final String ANSWER_OPTIONS_TEMPLATE = "Возможные варианты ответа: %s";
 	private static final String DIVIDING_LINE = "---------------------------------";
 	
-	public UserInterfaceServiceImpl(String encoding) {
+	public UserInterfaceServiceImpl(@Value("${console.encoding}")String encoding) {
 		try {
 			this.systemEncoding = System.getProperty("console.encoding", encoding);
 			this.scanner = new Scanner(new BufferedReader(new InputStreamReader(System.in)));

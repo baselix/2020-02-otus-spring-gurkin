@@ -3,6 +3,8 @@
  */
 package ru.gurkin.spring.usertesting.service.impl;
 
+import org.springframework.stereotype.Service;
+
 import com.google.common.base.Strings;
 
 import ru.gurkin.spring.usertesting.dao.TestServiceDao;
@@ -17,6 +19,7 @@ import ru.gurkin.spring.usertesting.service.UserTestingService;
  *
  * Сервис для тестирования пользователей
  */
+@Service
 public class UserTestingServiceImpl implements UserTestingService{
 	
 	private static final String GREETING = "Доброго времени суток";
