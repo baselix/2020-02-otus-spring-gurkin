@@ -26,7 +26,6 @@ import ru.gurkin.spring.usertesting.model.Question;
 import ru.gurkin.spring.usertesting.model.Result;
 import ru.gurkin.spring.usertesting.model.ResultValue;
 import ru.gurkin.spring.usertesting.model.UserTest;
-import ru.gurkin.spring.usertesting.service.I18nService;
 
 /**
  * @author digurkin
@@ -36,7 +35,7 @@ import ru.gurkin.spring.usertesting.service.I18nService;
 @Service
 public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 
-	private static final String FILE_NOT_FOUND_TEMPLATE = "Файл с названием %s не найден";
+	private static final String FILE_NOT_FOUND_TEMPLATE = "application.file_not_found_template";
 	
 	private static final String GREETING = "greeting";
 	private static final String FAREWELL = "fareweel";
@@ -52,9 +51,6 @@ public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 	private final String fileName;
 	private final String resourceEncoding;
 	private final char separator;
-	
-	@Autowired
-	private I18nService i18nService;
 	
 	public CSVTestServiceDaoImpl(String fileName, String resourceEncoding, char separator) {
 		this.fileName = fileName;
@@ -83,7 +79,7 @@ public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 	private Resource getResource(String fileName) {
 		Resource resource = new ClassPathResource(fileName);
 		if(!resource.exists()) {
-			throw new IllegalArgumentException(String.format(FILE_NOT_FOUND_TEMPLATE, fileName));
+			throw new IllegalArgumentException(i18nService.getMessage(FILE_NOT_FOUND_TEMPLATE, new Object[] {fileName}));
 		}
 		return resource;
 	}

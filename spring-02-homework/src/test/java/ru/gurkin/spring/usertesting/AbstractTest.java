@@ -24,8 +24,8 @@ public abstract class AbstractTest {
 		userTest.setFareweel("fareweel");
 		userTest.setGreeting("greeting");
 		List<Question> questions = Lists.newArrayList(
-				new Question("question", Lists.newArrayList("y","n"), null),
-				new Question("question", null, null)
+				new Question("question1", Lists.newArrayList("answer1","answer2"), null),
+				new Question("question2", Lists.newArrayList(), null)
 				);
 		userTest.setQuestions(questions);
 		TestResults testResults = new TestResults(
@@ -33,8 +33,8 @@ public abstract class AbstractTest {
 					new Result("result1", 1, 1),
 					new Result("result2", 100, 2)
 				),Lists.newArrayList(
-					new ResultValue("y", 1), 
-					new ResultValue("n", 0)
+					new ResultValue("answer1", 1), 
+					new ResultValue("answer2", 0)
 				));
 		userTest.setTestResults(testResults);
 		return userTest;

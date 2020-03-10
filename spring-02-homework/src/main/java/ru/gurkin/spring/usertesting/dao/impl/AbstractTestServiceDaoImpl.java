@@ -6,6 +6,8 @@ package ru.gurkin.spring.usertesting.dao.impl;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
 import com.google.common.base.Strings;
 
 import ru.gurkin.spring.usertesting.dao.TestServiceDao;
@@ -14,6 +16,7 @@ import ru.gurkin.spring.usertesting.model.Result;
 import ru.gurkin.spring.usertesting.model.ResultValue;
 import ru.gurkin.spring.usertesting.model.TestResults;
 import ru.gurkin.spring.usertesting.model.UserTest;
+import ru.gurkin.spring.usertesting.service.I18nService;
 
 /**
  * @author digurkin
@@ -21,8 +24,10 @@ import ru.gurkin.spring.usertesting.model.UserTest;
  * Абстрактная имплементация сервиса
  */
 public abstract class AbstractTestServiceDaoImpl implements TestServiceDao{
+	@Autowired
+	protected I18nService i18nService;
 
-	public static final String BAD_TEST_RESULT_STRING = "Не удалось вычислить результат тестирования. Обратитесь к разработчику.";
+	public static final String BAD_TEST_RESULT_STRING = "application.bad_test_result_string";
 	
 	public abstract UserTest getUserTest();
 	
@@ -38,7 +43,7 @@ public abstract class AbstractTestServiceDaoImpl implements TestServiceDao{
 				}
 			}
 		}
-		String resultString = BAD_TEST_RESULT_STRING;
+		String resultString = i18nService.getMessage(BAD_TEST_RESULT_STRING);
 		for(Result result : testResults.getResults()) {
 			if(resultSumm >= result.getLowerBorder() && resultSumm <= result.getUpperBorder()) {
 				resultString = result.getResultString();
