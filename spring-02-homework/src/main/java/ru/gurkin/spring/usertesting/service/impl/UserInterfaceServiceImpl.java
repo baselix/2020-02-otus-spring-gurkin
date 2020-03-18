@@ -43,12 +43,12 @@ public class UserInterfaceServiceImpl implements UserInterfaceService{
 	
 	private final I18nService i18nService;
 	
-	public UserInterfaceServiceImpl(@Value("${console.encoding}")String encoding, I18nService i18nService) {
+	public UserInterfaceServiceImpl(@Value("${console.encoding}")String encoding, I18nService i18nService, ConsoleContext consoleContext) {
 		this.i18nService = i18nService;
 		try {
 			this.systemEncoding = System.getProperty("console.encoding", encoding);
-			this.scanner = new Scanner(new BufferedReader(new InputStreamReader(System.in)));
-			this.out = new PrintStream(System.out, true, systemEncoding);
+			this.scanner = new Scanner(consoleContext.getIn());
+			this.out = new PrintStream(consoleContext.getOut(), true, systemEncoding);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}
