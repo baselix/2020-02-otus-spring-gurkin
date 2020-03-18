@@ -26,6 +26,7 @@ import ru.gurkin.spring.usertesting.model.Question;
 import ru.gurkin.spring.usertesting.model.Result;
 import ru.gurkin.spring.usertesting.model.ResultValue;
 import ru.gurkin.spring.usertesting.model.UserTest;
+import ru.gurkin.spring.usertesting.service.I18nService;
 
 /**
  * @author digurkin
@@ -52,7 +53,8 @@ public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 	private final String resourceEncoding;
 	private final char separator;
 	
-	public CSVTestServiceDaoImpl(String fileName, String resourceEncoding, char separator) {
+	public CSVTestServiceDaoImpl(I18nService i18nService, String fileName, String resourceEncoding, char separator) {
+		super(i18nService);
 		this.fileName = fileName;
 		if(Strings.isNullOrEmpty(resourceEncoding)) {
 			this.resourceEncoding = DEFAULT_RESOURCE_ENCODING;
@@ -62,13 +64,13 @@ public class CSVTestServiceDaoImpl extends AbstractTestServiceDaoImpl{
 		this.separator = separator;
 	}
 	
-	public CSVTestServiceDaoImpl(String fileName, String resourceEncoding) {
-		this(fileName, resourceEncoding, DEFAULT_SEPARATOR);
+	public CSVTestServiceDaoImpl(I18nService i18nService, String fileName, String resourceEncoding) {
+		this(i18nService, fileName, resourceEncoding, DEFAULT_SEPARATOR);
 	}
 	
 	@Autowired
-	public CSVTestServiceDaoImpl(@Value("${resources.test-file-name}")String fileName) {
-		this(fileName, DEFAULT_RESOURCE_ENCODING, DEFAULT_SEPARATOR);
+	public CSVTestServiceDaoImpl(I18nService i18nService, @Value("${resources.test-file-name}")String fileName) {
+		this(i18nService, fileName, DEFAULT_RESOURCE_ENCODING, DEFAULT_SEPARATOR);
 	}
 	
 	@Override

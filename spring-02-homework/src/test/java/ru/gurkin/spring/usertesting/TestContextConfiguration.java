@@ -43,7 +43,7 @@ public class TestContextConfiguration {
     }
     
     @Bean
-    public TestServiceDao testServiceDao(MessageSource messageSource, @Value("${resources.test-file-name}")String fileName) {
-    		return new CSVTestServiceDaoImpl(fileName);
+    public TestServiceDao testServiceDao(I18nService i18nService, MessageSource messageSource, @Value("${resources.test-file-name}")String fileName) {
+    		return new CSVTestServiceDaoImpl(i18nService, fileName);
     }
 }
