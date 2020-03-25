@@ -1,0 +1,15 @@
+Урезанная версия (5 вопросов, как и было указано в задании)
+question;question.1;answer.yes|answer.no|answer.maybe
+question;question.2;answer.yes|answer.no|answer.maybe
+question;question.3;answer.yes|answer.no|answer.maybe
+question;question.4;answer.yes|answer.no|answer.maybe
+question;question.5;answer.yes|answer.no|answer.maybe
+greeting;test.greeting
+fareweel;test.fareweel
+result;0;3;result.1
+result;4;7;result.2
+result;8;10;result.3
+resultValue;answer.yes;2
+resultValue;answer.no;0
+resultValue;answer.maybe;1
+Полная версия лежит тут: http://www.psi.lib.ru/test/test6.htm и в файле ImaginationTest.csv. Используйте его для получениия корректных результатов тестирования
