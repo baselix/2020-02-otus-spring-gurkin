@@ -3,21 +3,19 @@
  */
 package ru.gurkin.spring.usertesting.service.impl;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
 import java.io.PrintStream;
 import java.io.UnsupportedEncodingException;
 import java.util.List;
 import java.util.Scanner;
 import java.util.Set;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
 import com.google.common.collect.Sets;
 
+import ru.gurkin.spring.usertesting.config.ConsoleConfig;
 import ru.gurkin.spring.usertesting.service.I18nService;
 import ru.gurkin.spring.usertesting.service.UserInterfaceService;
 
@@ -43,10 +41,10 @@ public class UserInterfaceServiceImpl implements UserInterfaceService{
 	
 	private final I18nService i18nService;
 	
-	public UserInterfaceServiceImpl(@Value("${console.encoding}")String encoding, I18nService i18nService, ConsoleContext consoleContext) {
+	public UserInterfaceServiceImpl(ConsoleConfig consoleConfig, I18nService i18nService, ConsoleContext consoleContext) {
 		this.i18nService = i18nService;
 		try {
-			this.systemEncoding = System.getProperty("console.encoding", encoding);
+			this.systemEncoding = System.getProperty("console.encoding", consoleConfig.getEncoding());
 			this.scanner = new Scanner(consoleContext.getIn());
 			this.out = new PrintStream(consoleContext.getOut(), true, systemEncoding);
 		} catch (UnsupportedEncodingException e) {

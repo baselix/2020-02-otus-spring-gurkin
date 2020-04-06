@@ -3,23 +3,21 @@ package ru.gurkin.spring.usertesting.dao.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import ru.gurkin.spring.usertesting.AbstractTest;
-import ru.gurkin.spring.usertesting.TestContextConfiguration;
 import ru.gurkin.spring.usertesting.dao.TestServiceDao;
 import ru.gurkin.spring.usertesting.model.Question;
 import ru.gurkin.spring.usertesting.model.UserTest;
 import ru.gurkin.spring.usertesting.service.I18nService;
 
-@TestPropertySource("/application.properties")
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TestContextConfiguration.class})
+@ActiveProfiles("test")
+@SpringBootTest
+@DisplayName("Тест .csv файла")
 class CSVTestServiceDaoImplTest extends AbstractTest{
 	
 	@Autowired
@@ -56,4 +54,25 @@ class CSVTestServiceDaoImplTest extends AbstractTest{
 		userTest = testService.testResultsProcessing(userTest);
 		assertEquals(i18nService.getMessage("application.bad_test_result_string"), userTest.getTestResult());
 	}
+	
+//	private UserTest getUserTest() {
+//		UserTest userTest = new UserTest();
+//		userTest.setFareweel("fareweel");
+//		userTest.setGreeting("greeting");
+//		List<Question> questions = Lists.newArrayList(
+//				new Question("question1", Lists.newArrayList("answer1","answer2"), null),
+//				new Question("question2", Lists.newArrayList(), null)
+//				);
+//		userTest.setQuestions(questions);
+//		TestResults testResults = new TestResults(
+//				Lists.newArrayList(
+//					new Result("result1", 1, 1),
+//					new Result("result2", 100, 2)
+//				),Lists.newArrayList(
+//					new ResultValue("answer1", 1), 
+//					new ResultValue("answer2", 0)
+//				));
+//		userTest.setTestResults(testResults);
+//		return userTest;
+//	}
 }

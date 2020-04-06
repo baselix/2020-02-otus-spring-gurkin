@@ -1,0 +1,6 @@
+resources:
+  testFileName: test.csv
+console:
+  encoding: UTF-8
+application:
+  locale: en
