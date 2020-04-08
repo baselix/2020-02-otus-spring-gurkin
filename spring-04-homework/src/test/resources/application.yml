@@ -4,3 +4,7 @@ console:
   encoding: UTF-8
 application:
   locale: en
+spring:
+  shell:
+    interactive:
+      enabled: false

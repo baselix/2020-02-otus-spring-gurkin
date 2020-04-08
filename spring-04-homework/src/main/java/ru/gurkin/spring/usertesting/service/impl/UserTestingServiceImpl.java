@@ -3,11 +3,16 @@
  */
 package ru.gurkin.spring.usertesting.service.impl;
 
+import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Strings;
 
 import ru.gurkin.spring.usertesting.dao.TestServiceDao;
+import ru.gurkin.spring.usertesting.events.LoginEvent;
+import ru.gurkin.spring.usertesting.events.LogoutEvent;
+import ru.gurkin.spring.usertesting.events.ShowResultEvent;
+import ru.gurkin.spring.usertesting.events.StartTestingEvent;
 import ru.gurkin.spring.usertesting.model.Question;
 import ru.gurkin.spring.usertesting.model.User;
 import ru.gurkin.spring.usertesting.model.UserTest;
@@ -41,20 +46,24 @@ public class UserTestingServiceImpl implements UserTestingService{
 	
 	@Override
 	public void startTesting() {
-		test = testService.getUserTest();
-		test.setUser(getUserData());
+		getTestData();
+		getUserData();
 		displayGreeting(test.getGreeting());
 		doTesting();
 		displayTestingResults();
 		displayFareweel(test.getFareweel());
 	}
 	
-	private User getUserData() {
+	private void getTestData() {
+		test = testService.getUserTest();
+	}
+	
+	private void getUserData() {
 		userInterfaceService.displayDividingLineToUser();
 		userInterfaceService.displayToUser(i18nService.getMessage(GREETING));
 		String userName = userInterfaceService.getUserName();
 		String userSoname = userInterfaceService.getUserSoname();
-		return new User(userName, userSoname);
+		test.setUser(new User(userName, userSoname));
 	}
 	
 	private void displayGreeting(String greeting) {
@@ -92,5 +101,29 @@ public class UserTestingServiceImpl implements UserTestingService{
 	@Override
 	public UserTest getCurrentTest() {
 		return test;
+	}
+	
+	@EventListener
+	public void login(LoginEvent loginEvent) {
+		getTestData();
+		getUserData();
+	}
+	
+	@EventListener
+	public void logout(LogoutEvent logoutEvent) {
+		getTestData();
+	}
+	
+	@EventListener
+	public void startTesting(StartTestingEvent startTestingEvent) {
+		displayGreeting(test.getGreeting());
+		doTesting();
+		displayTestingResults();
+		displayFareweel(test.getFareweel());
+	}
+	
+	@EventListener
+	public void showResult(ShowResultEvent showResultEvent) {
+		displayTestingResults();
 	}
 }
