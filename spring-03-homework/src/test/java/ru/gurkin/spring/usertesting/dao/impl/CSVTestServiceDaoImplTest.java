@@ -54,25 +54,4 @@ class CSVTestServiceDaoImplTest extends AbstractTest{
 		userTest = testService.testResultsProcessing(userTest);
 		assertEquals(i18nService.getMessage("application.bad_test_result_string"), userTest.getTestResult());
 	}
-	
-//	private UserTest getUserTest() {
-//		UserTest userTest = new UserTest();
-//		userTest.setFareweel("fareweel");
-//		userTest.setGreeting("greeting");
-//		List<Question> questions = Lists.newArrayList(
-//				new Question("question1", Lists.newArrayList("answer1","answer2"), null),
-//				new Question("question2", Lists.newArrayList(), null)
-//				);
-//		userTest.setQuestions(questions);
-//		TestResults testResults = new TestResults(
-//				Lists.newArrayList(
-//					new Result("result1", 1, 1),
-//					new Result("result2", 100, 2)
-//				),Lists.newArrayList(
-//					new ResultValue("answer1", 1), 
-//					new ResultValue("answer2", 0)
-//				));
-//		userTest.setTestResults(testResults);
-//		return userTest;
-//	}
 }

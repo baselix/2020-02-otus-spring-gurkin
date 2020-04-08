@@ -1,12 +1,13 @@
 package ru.gurkin.spring.usertesting.service.impl;
 
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.Mockito.when;
 
-import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentMatchers;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -19,7 +20,6 @@ import ru.gurkin.spring.usertesting.model.Question;
 import ru.gurkin.spring.usertesting.model.UserTest;
 import ru.gurkin.spring.usertesting.service.I18nService;
 import ru.gurkin.spring.usertesting.service.UserInterfaceService;
-import ru.gurkin.spring.usertesting.service.UserTestingService;
 
 @ActiveProfiles("test")
 @SpringBootTest
@@ -34,7 +34,8 @@ class UserTestingServiceImplTest extends AbstractTest{
 	@Mock
 	I18nService i18nService;
 	
-	private UserTestingService userTestingService;
+	@InjectMocks
+	UserTestingServiceImpl userTestingService;
 	
 	private static final String USER_NAME = "User";
 	private static final String USER_SONAME = "Userov";
@@ -43,7 +44,6 @@ class UserTestingServiceImplTest extends AbstractTest{
 	
 	@BeforeEach
 	void prepareData() {
-		userTestingService = new UserTestingServiceImpl(userInterfaceService, testService, i18nService);
 		when(testService.getUserTest()).thenReturn(getUserTest());
 		when(userInterfaceService.getUserName()).thenReturn(USER_NAME);
 		when(userInterfaceService.getUserSoname()).thenReturn(USER_SONAME);
