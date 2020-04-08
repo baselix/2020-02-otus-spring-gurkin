@@ -2,13 +2,13 @@ package ru.gurkin.spring.usertesting.service.impl;
 
 import java.util.Locale;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.context.NoSuchMessageException;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Strings;
 
+import ru.gurkin.spring.usertesting.config.ApplicationConfig;
 import ru.gurkin.spring.usertesting.service.I18nService;
 
 @Service
@@ -17,11 +17,11 @@ public class I18nServiceImpl implements I18nService{
 	private final MessageSource messageSource;
 	private Locale locale;
 	
-    public I18nServiceImpl(MessageSource messageSource, @Value("${application.locale}")String localeString) {
+    public I18nServiceImpl(MessageSource messageSource, ApplicationConfig applicationConfig) {
 		this.messageSource = messageSource;
 		
-		if(!Strings.isNullOrEmpty(localeString)) {
-			this.locale = Locale.forLanguageTag(localeString);
+		if(!Strings.isNullOrEmpty(applicationConfig.getLocale())) {
+			this.locale = Locale.forLanguageTag(applicationConfig.getLocale());
 		}else {
 			this.locale = Locale.getDefault();
 		}

@@ -16,4 +16,7 @@
 5. Перенести тесты и использовать spring-boot-test-starter для тестирования
 
 Описание решения:
-1. 
+1. Приложение переведено на Spring Boot: класс Main убран, добавлены UserTestingApplication, являющийся входной точкой нашего приложения и UserTestingCommandLineRunner
+2. Тестирование переведено на использование @SpringBootTest. Добавлены новые тесты.
+3. Конфигурирование приложения переведено с файла application.properties на application.yml. Для доступа к файлу конфигурации созданы соответсвтующие классы в пакете config, использующие анотации @Component и @ConfigurationProperties
+4. Добавлен собственный баннер приложения (файл banner.txt)

@@ -3,23 +3,21 @@ package ru.gurkin.spring.usertesting.dao.impl;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.TestPropertySource;
-import org.springframework.test.context.junit.jupiter.SpringExtension;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 
 import ru.gurkin.spring.usertesting.AbstractTest;
-import ru.gurkin.spring.usertesting.TestContextConfiguration;
 import ru.gurkin.spring.usertesting.dao.TestServiceDao;
 import ru.gurkin.spring.usertesting.model.Question;
 import ru.gurkin.spring.usertesting.model.UserTest;
 import ru.gurkin.spring.usertesting.service.I18nService;
 
-@TestPropertySource("/application.properties")
-@ExtendWith(SpringExtension.class)
-@ContextConfiguration(classes = {TestContextConfiguration.class})
+@ActiveProfiles("test")
+@SpringBootTest
+@DisplayName("Тест .csv файла")
 class CSVTestServiceDaoImplTest extends AbstractTest{
 	
 	@Autowired

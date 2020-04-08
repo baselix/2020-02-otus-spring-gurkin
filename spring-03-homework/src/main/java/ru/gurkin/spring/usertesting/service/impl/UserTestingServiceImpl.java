@@ -31,6 +31,8 @@ public class UserTestingServiceImpl implements UserTestingService{
 	private final TestServiceDao testService;
 	private final I18nService i18nService;
 	
+	private UserTest test;
+	
 	public UserTestingServiceImpl(UserInterfaceService userInterfaceService, TestServiceDao testService, I18nService i18nService) {
 		this.userInterfaceService = userInterfaceService;
 		this.testService = testService;
@@ -39,13 +41,11 @@ public class UserTestingServiceImpl implements UserTestingService{
 	
 	@Override
 	public void startTesting() {
-		UserTest test = testService.getUserTest();
-		
+		test = testService.getUserTest();
 		test.setUser(getUserData());
-		
 		displayGreeting(test.getGreeting());
-		doTesting(test);
-		displayTestingResults(test);
+		doTesting();
+		displayTestingResults();
 		displayFareweel(test.getFareweel());
 	}
 	
@@ -69,7 +69,7 @@ public class UserTestingServiceImpl implements UserTestingService{
 		userInterfaceService.displayDividingLineToUser();
 	}
 	
-	private void doTesting(UserTest test) {
+	private void doTesting() {
 		for(Question question : test.getQuestions()) {
 			userInterfaceService.displayDividingLineToUser();
 			userInterfaceService.displayToUser(question.getQuestion());
@@ -81,11 +81,16 @@ public class UserTestingServiceImpl implements UserTestingService{
 		}
 	}
 	
-	private void displayTestingResults(UserTest test) {
-		UserTest processedTest = testService.testResultsProcessing(test);
-		if(!Strings.isNullOrEmpty(processedTest.getTestResult())){
+	private void displayTestingResults() {
+		test = testService.testResultsProcessing(test);
+		if(!Strings.isNullOrEmpty(test.getTestResult())){
 			userInterfaceService.displayDividingLineToUser();
-			userInterfaceService.displayToUser(i18nService.getMessage(RESULT_TEMPLATE, new Object[] {processedTest.getUser().getUserName(), processedTest.getTestResult()}));
+			userInterfaceService.displayToUser(i18nService.getMessage(RESULT_TEMPLATE, new Object[] {test.getUser().getUserName(), test.getTestResult()}));
 		}
+	}
+
+	@Override
+	public UserTest getCurrentTest() {
+		return test;
 	}
 }

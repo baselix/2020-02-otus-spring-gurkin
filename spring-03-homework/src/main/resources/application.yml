@@ -1,0 +1,6 @@
+resources:
+  testFileName: ImaginationTestLite.csv
+console:
+  encoding: UTF-8
+application:
+  locale: ru
