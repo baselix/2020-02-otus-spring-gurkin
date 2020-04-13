@@ -12,7 +12,6 @@ import org.mockito.Mock;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import ru.gurkin.spring.usertesting.AbstractTest;
 import ru.gurkin.spring.usertesting.dao.TestServiceDao;
@@ -21,7 +20,6 @@ import ru.gurkin.spring.usertesting.model.UserTest;
 import ru.gurkin.spring.usertesting.service.I18nService;
 import ru.gurkin.spring.usertesting.service.UserInterfaceService;
 
-@ActiveProfiles("test")
 @SpringBootTest
 class UserTestingServiceImplTest extends AbstractTest{
 	

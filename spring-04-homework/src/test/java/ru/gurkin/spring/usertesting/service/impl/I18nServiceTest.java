@@ -7,12 +7,10 @@ import java.util.Locale;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
 
 import ru.gurkin.spring.usertesting.AbstractTest;
 import ru.gurkin.spring.usertesting.service.I18nService;
 
-@ActiveProfiles("test")
 @SpringBootTest
 public class I18nServiceTest extends AbstractTest{
 
