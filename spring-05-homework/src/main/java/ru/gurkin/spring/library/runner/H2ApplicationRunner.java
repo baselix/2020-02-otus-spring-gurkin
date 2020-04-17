@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @Order(InteractiveShellApplicationRunner.PRECEDENCE - 1)
-@Profile("!test")
+@Profile("dev")
 public class H2ApplicationRunner implements ApplicationRunner {
 	@Override
 	public void run(ApplicationArguments args) throws Exception {

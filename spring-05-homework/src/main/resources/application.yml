@@ -7,13 +7,8 @@ spring:
     data: "data.sql" 
   jpa:
     database-platform: org.hibernate.dialect.H2Dialect
-  h2:
-    console:
-      enabled: true
-      path: /console
-      settings:
-        trace: false
-        web-allow-others: false
-        
+---
+ spring:
+  profiles: "dev"       
 ---
 spring:  profiles: "test"  datasource:    data: "test-data.sql"
