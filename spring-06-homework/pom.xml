@@ -11,7 +11,7 @@
 	</parent>
 	<groupId>ru.gurkin.spring</groupId>
 	<artifactId>library</artifactId>
-	<version>1.0.0-SNAPSHOT</version>
+	<version>1.0.1-SNAPSHOT</version>
 	<name>library</name>
 	<description>library</description>
 
