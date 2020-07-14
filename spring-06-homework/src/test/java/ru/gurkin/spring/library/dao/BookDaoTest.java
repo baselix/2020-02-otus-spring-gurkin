@@ -9,33 +9,42 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.shell.jline.InteractiveShellApplicationRunner;
-import org.springframework.shell.jline.ScriptShellApplicationRunner;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
+import ru.gurkin.spring.library.dao.impl.AuthorDaoJpaImpl;
+import ru.gurkin.spring.library.dao.impl.BookDaoJpaImpl;
+import ru.gurkin.spring.library.dao.impl.GenreDaoJpaImpl;
 import ru.gurkin.spring.library.model.Author;
 import ru.gurkin.spring.library.model.Book;
 import ru.gurkin.spring.library.model.Genre;
 
-@SpringBootTest(properties = { InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
-		ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false" })
-@Transactional
 @ActiveProfiles("test")
+@DataJpaTest
+@Transactional
+@Import({BookDaoJpaImpl.class, AuthorDaoJpaImpl.class, GenreDaoJpaImpl.class})
 @DisplayName("Класс dao для книг корректно ")
 class BookDaoTest {
 
 	private static final String TITLE_FILTER = "test book";
 
 	@Autowired
-	BookDao bookDao;
+	BookDaoJpaImpl bookDao;
+	@Autowired
+	AuthorDaoJpaImpl authorDao;
+	@Autowired
+	GenreDaoJpaImpl genreDao;
 
 	@Test
 	@DisplayName("получает все книги")
 	void getAllTest() {
-		List<Book> allAuthors = bookDao.getAll();
-		assertEquals(4, allAuthors.size());
+		List<Book> allBooks = bookDao.getAll();
+		for(Book book : allBooks) {
+			System.out.println(book);
+		}
+		assertEquals(4, allBooks.size());
 	}
 
 	@Test
@@ -50,16 +59,26 @@ class BookDaoTest {
 	void createAndGetTest() {
 		Book newBook = new Book();
 		newBook.setTitle("new book");
+		Author author = authorDao.getById(1L);
+		newBook.getAuthors().add(author);
+		Genre genre = genreDao.getById(1L);
+		newBook.getGenres().add(genre);
 		newBook = bookDao.create(newBook);
+		assertEquals(newBook.getAuthors().isEmpty(), false);
+		assertEquals(newBook.getGenres().isEmpty(), false);
 		Book foundedBook = bookDao.getById(newBook.getId());
 		assertEquals(newBook, foundedBook);
+		assertEquals(foundedBook.getAuthors().isEmpty(), false);
+		assertEquals(foundedBook.getGenres().isEmpty(), false);
 	}
 
 	@Test
 	@DisplayName("обновляет книгу")
 	void updateTest() {
 		Book book = bookDao.getById(1L);
-		Author author = new Author(2L, "test author 2");
+		Author author = new Author();
+		author.setId(2L);
+		author.setName("test author 2");
 		book.getAuthors().add(author);
 		Genre genre = new Genre(1L, "test genre 1");
 		book.getGenres().remove(genre);
@@ -85,6 +104,10 @@ class BookDaoTest {
 	void deleteTest() {
 		Book newBook = new Book();
 		newBook.setTitle("new book");
+		Author author = authorDao.getById(1L);
+		newBook.getAuthors().add(author);
+		Genre genre = genreDao.getById(1L);
+		newBook.getGenres().add(genre);
 		newBook = bookDao.create(newBook);
 		long id = newBook.getId();
 		boolean isIdFound = false;

@@ -51,7 +51,8 @@ class AuthorServiceTest {
 	@DisplayName("проверяет параметры создаваемого автора")
 	void createAuthorVerificationTest() {
 		checkExeption(NullPointerException.class, AUTHOR_ERROR, () -> service.create(null));
-		Author author = new Author(1L, null);
+		Author author = new Author();
+		author.setId(1L);
 		checkExeption(IllegalArgumentException.class, NULL_ID_ERROR, () -> service.create(author));
 		author.setId(null);
 		checkExeption(IllegalArgumentException.class, NAME_ERROR, () -> service.create(author));
@@ -69,7 +70,7 @@ class AuthorServiceTest {
 	@DisplayName("проверяет параметры обновляемого автора")
 	void updateAuthorVerificationTest() {
 		checkExeption(NullPointerException.class, AUTHOR_ERROR, () -> service.update(null));
-		Author author = new Author(null, null);
+		Author author = new Author();
 		checkExeption(IllegalArgumentException.class, NOT_NULL_ID_ERROR, () -> service.update(author));
 		author.setId(1L);
 		checkExeption(IllegalArgumentException.class, NAME_ERROR, () -> service.update(author));

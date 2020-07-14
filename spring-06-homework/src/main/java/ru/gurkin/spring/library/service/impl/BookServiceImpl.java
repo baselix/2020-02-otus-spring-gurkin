@@ -3,6 +3,8 @@ package ru.gurkin.spring.library.service.impl;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Strings;
 
@@ -13,6 +15,7 @@ import ru.gurkin.spring.library.service.BookService;
 import static com.google.common.base.Preconditions.*;
 import static ru.gurkin.spring.library.model.ErrorConstants.*;
 
+@Transactional(propagation=Propagation.REQUIRED, readOnly=false, noRollbackFor=Exception.class)
 @Service
 public class BookServiceImpl implements BookService{
 
@@ -24,7 +27,8 @@ public class BookServiceImpl implements BookService{
 
 	@Override
 	public List<Book> getAll() {
-		return dao.getAll();
+		List<Book> books = dao.getAll(); 
+		return books;
 	}
 
 	@Override
@@ -40,7 +44,8 @@ public class BookServiceImpl implements BookService{
 		checkArgument(!Strings.isNullOrEmpty(book.getTitle()), TITLE_ERROR);
 		checkArgument(book.getAuthors().size() > 0, BOOK_NO_AUTHOR_ERROR);
 		checkArgument(book.getGenres().size() > 0, BOOK_NO_GENRE_ERROR);
-		return dao.create(book);
+		Book createdBook = dao.create(book); 
+		return createdBook;
 	}
 
 	@Override

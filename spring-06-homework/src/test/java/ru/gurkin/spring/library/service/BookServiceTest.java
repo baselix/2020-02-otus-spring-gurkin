@@ -45,7 +45,8 @@ class BookServiceTest {
 	@DisplayName("проверяет параметры создаваемой книги")
 	void createBookVerificationTest() {
 		checkExeption(NullPointerException.class, BOOK_ERROR, () -> service.create(null));
-		Book book = new Book(1L, null);
+		Book book = new Book();
+		book.setId(1L);
 		checkExeption(IllegalArgumentException.class, NULL_ID_ERROR, () -> service.create(book));
 		book.setId(null);
 		checkExeption(IllegalArgumentException.class, TITLE_ERROR, () -> service.create(book));
@@ -67,7 +68,7 @@ class BookServiceTest {
 	@DisplayName("проверяет параметры обновляемой книги")
 	void updateBookVerificationTest() {
 		checkExeption(NullPointerException.class, BOOK_ERROR, () -> service.update(null));
-		Book book = new Book(null, null);
+		Book book = new Book();
 		checkExeption(IllegalArgumentException.class, NOT_NULL_ID_ERROR, () -> service.update(book));
 		book.setId(1L);
 		checkExeption(IllegalArgumentException.class, TITLE_ERROR, () -> service.update(book));

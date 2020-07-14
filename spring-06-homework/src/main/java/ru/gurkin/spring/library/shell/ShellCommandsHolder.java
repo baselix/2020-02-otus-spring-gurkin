@@ -7,16 +7,22 @@ import org.springframework.shell.standard.ShellComponent;
 import org.springframework.shell.standard.ShellMethod;
 import org.springframework.shell.standard.ShellMethodAvailability;
 import org.springframework.shell.standard.ShellOption;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import ru.gurkin.spring.library.model.Author;
 import ru.gurkin.spring.library.model.Book;
+import ru.gurkin.spring.library.model.Comment;
 import ru.gurkin.spring.library.model.Genre;
 import ru.gurkin.spring.library.service.AuthorService;
 import ru.gurkin.spring.library.service.BookService;
+import ru.gurkin.spring.library.service.CommentService;
 import ru.gurkin.spring.library.service.GenreService;
 
 import static ru.gurkin.spring.library.model.ShellCommands.*;
 
+
+@Transactional(propagation=Propagation.REQUIRED, readOnly=false, noRollbackFor=Exception.class)
 @ShellComponent
 @ShellCommandGroup("Library operations")
 public class ShellCommandsHolder {
@@ -24,10 +30,12 @@ public class ShellCommandsHolder {
 	private static final String AUTHOR_GROUP = "1: Author operations";
 	private static final String GENRE_GROUP = "2: Genre operations";
 	private static final String BOOK_GROUP = "3: Book operations";
+	private static final String COMMENT_GROUP = "4: Comments operations";
 
 	private static final String CANT_DELETE_AUTHOR = "Нельзя удалить используемого автора";
 	private static final String CANT_DELETE_BOOK = "Нельзя удалить книжку, почему-то";
 	private static final String CANT_DELETE_GENRE = "Нельзя удалить используемый жанр";
+	private static final String CANT_DELETE_COMMENT = "Нельзя удалить комментарий";
 
 	private static final String NEED_AUTHOR_OR_GENRE = "Необходимо создать хотя бы одного автора и хотя бы один жанр";
 
@@ -38,12 +46,14 @@ public class ShellCommandsHolder {
 
 	private final GenreService genreService;
 	private final BookService bookService;
-	private AuthorService authorService;
+	private final AuthorService authorService;
+	private final CommentService commentService;
 
-	public ShellCommandsHolder(BookService bookService, AuthorService authorService, GenreService genreService) {
+	public ShellCommandsHolder(BookService bookService, AuthorService authorService, GenreService genreService, CommentService commentService) {
 		this.bookService = bookService;
 		this.authorService = authorService;
 		this.genreService = genreService;
+		this.commentService = commentService;
 	}
 
 	@ShellMethod(key = COMMAND_SHOW_GENRES, value = "Show all genres", group = GENRE_GROUP)
@@ -108,6 +118,7 @@ public class ShellCommandsHolder {
 		}
 	}
 
+	@Transactional
 	@ShellMethod(key = COMMAND_SHOW_BOOKS, value = "Show all books", group = BOOK_GROUP)
 	public Object showBooks() {
 		try {
@@ -123,7 +134,11 @@ public class ShellCommandsHolder {
 		try {
 			Author author = authorService.getById(authorId);
 			Genre genre = genreService.getById(genreId);
-			return bookService.create(new Book(title, author, genre));
+			Book book = new Book();
+			book.setTitle(title);
+			book.getAuthors().add(author);
+			book.getGenres().add(genre);
+			return bookService.create(book);
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -188,25 +203,58 @@ public class ShellCommandsHolder {
 			return e.getMessage();
 		}
 	}
+	
+	@ShellMethod(key = COMMAND_SHOW_COMMENTS, value = "Show comments", group = COMMENT_GROUP)
+	public Object showComments(@ShellOption() Long bookId) {
+		try {
+			return commentService.getCommentsByBookId(bookId);
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
 
-	private Availability hasAuthors() {
-		if (!authorService.getAll().isEmpty()) {
+	@ShellMethod(key = COMMAND_CREATE_COMMENT, value = "Create comment", group = COMMENT_GROUP)
+	public Object createComment(@ShellOption() Long bookId, @ShellOption() String message) {
+		try {
+			Comment newComment = new Comment();
+			newComment.setBookId(bookId);
+			newComment.setMessage(message);
+			Comment createdComment = commentService.create(newComment);
+			return createdComment;
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+
+	@ShellMethod(key = COMMAND_DELETE_COMMENT, value = "Delete comment", group = COMMENT_GROUP)
+	public Object deleteComment(@ShellOption() Long id) {
+		try {
+			commentService.delete(id);
+			return OK_MESSAGE;
+		} catch (DataIntegrityViolationException dive) {
+			return CANT_DELETE_COMMENT;
+		} catch (Exception e) {
+			return e.getMessage();
+		}
+	}
+
+	public Availability hasAuthors() {
+		if (authorService.getAll() != null && !authorService.getAll().isEmpty()) {
 			return Availability.available();
 		} else {
 			return Availability.unavailable(NO_AUTHOR);
 		}
 	}
 
-	private Availability hasGenres() {
-		if (!genreService.getAll().isEmpty()) {
+	public Availability hasGenres() {
+		if (genreService.getAll() != null && !genreService.getAll().isEmpty()) {
 			return Availability.available();
 		} else {
 			return Availability.unavailable(NO_GENRE);
 		}
 	}
 
-	@SuppressWarnings("unused")
-	private Availability canCreateBook() {
+	public Availability canCreateBook() {
 		if (hasAuthors().isAvailable() && hasGenres().isAvailable()) {
 			return Availability.available();
 		} else {

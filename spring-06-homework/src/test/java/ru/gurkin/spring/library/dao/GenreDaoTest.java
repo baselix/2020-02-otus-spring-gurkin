@@ -9,33 +9,29 @@ import java.util.List;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.shell.jline.InteractiveShellApplicationRunner;
-import org.springframework.shell.jline.ScriptShellApplicationRunner;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 
+import ru.gurkin.spring.library.dao.impl.GenreDaoJpaImpl;
 import ru.gurkin.spring.library.model.Genre;
 
-@SpringBootTest(properties = {
-	       InteractiveShellApplicationRunner.SPRING_SHELL_INTERACTIVE_ENABLED + "=false",
-	       ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false"
-	    })
-@Transactional
 @ActiveProfiles("test")
+@DataJpaTest
+@Import(GenreDaoJpaImpl.class)
 @DisplayName("Класс dao для жанров корректно ")
 class GenreDaoTest {
 
 	private static final String TITLE_FILTER = "test genre";
 
 	@Autowired
-	GenreDao genreDao;
+	GenreDaoJpaImpl genreDao;
 
 	@Test
 	@DisplayName("получает все жанры")
 	void getAllTest() {
-		List<Genre> allAuthors = genreDao.getAll();
-		assertEquals(4, allAuthors.size());
+		List<Genre> allGenres = genreDao.getAll();
+		assertEquals(4, allGenres.size());
 	}
 
 	@Test

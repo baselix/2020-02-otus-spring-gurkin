@@ -1,4 +1,5 @@
 spring:
+  profiles: "prod"
   datasource:
     url: jdbc:h2:mem:library
     driverClassName: org.h2.Driver
@@ -6,9 +7,28 @@ spring:
     password:
     data: "data.sql" 
   jpa:
-    database-platform: org.hibernate.dialect.H2Dialect
+    generate-ddl: false
+    hibernate:
+      ddl-auto: none
+    show-sql: false
 ---
- spring:
-  profiles: "dev"       
+spring:
+  profiles: "dev"
+  datasource:
+    url: jdbc:h2:mem:library
+    driverClassName: org.h2.Driver
+    username: admin
+    password:
+    data: "dev-data.sql"
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true       
 ---
 spring:  profiles: "test"  datasource:    data: "test-data.sql"
+  jpa:
+    generate-ddl: false
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
