@@ -16,6 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ru.gurkin.spring.library.dao.impl.BookDaoJpaImpl;
 import ru.gurkin.spring.library.dao.impl.CommentDaoJpaImpl;
+import ru.gurkin.spring.library.model.Book;
 import ru.gurkin.spring.library.model.Comment;
 
 @ActiveProfiles("test")
@@ -41,8 +42,9 @@ class CommentDaoTest {
 	@Test
 	@DisplayName("создает и получает комментарий")
 	void createAndGetTest() {
+		Book book = bookDao.getById(1L);
 		Comment newComment = new Comment();
-		newComment.setBookId(1L);
+		newComment.setBook(book);
 		newComment.setMessage("next genre");
 		newComment = commentDao.create(newComment);
 		Comment foundedComment = commentDao.getById(newComment.getId());
@@ -52,8 +54,9 @@ class CommentDaoTest {
 	@Test
 	@DisplayName("обновляет комментарий")
 	void updateTest() {
+		Book book = bookDao.getById(1L);
 		Comment newComment = new Comment();
-		newComment.setBookId(1L);
+		newComment.setBook(book);
 		newComment.setMessage("next genre");
 		newComment = commentDao.create(newComment);
 		newComment.setMessage("updated comment");
@@ -67,15 +70,16 @@ class CommentDaoTest {
 	void findTest() {
 		List<Comment> comments = commentDao.getCommentsByBookId(1l);
 		for (Comment comment : comments) {
-			assertTrue(comment.getBookId().equals(1L));
+			assertTrue(comment.getBook().getId().equals(1L));
 		}
 	}
 
 	@Test
 	@DisplayName("удаляет комментарий")
 	void deleteTest() {
+		Book book = bookDao.getById(1L);
 		Comment newComment = new Comment();
-		newComment.setBookId(1L);
+		newComment.setBook(book);
 		newComment.setMessage("next genre");
 		newComment = commentDao.create(newComment);
 		long id = newComment.getId();

@@ -10,6 +10,9 @@ import org.springframework.shell.standard.ShellOption;
 import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+
 import ru.gurkin.spring.library.model.Author;
 import ru.gurkin.spring.library.model.Book;
 import ru.gurkin.spring.library.model.Comment;
@@ -20,6 +23,8 @@ import ru.gurkin.spring.library.service.CommentService;
 import ru.gurkin.spring.library.service.GenreService;
 
 import static ru.gurkin.spring.library.model.ShellCommands.*;
+
+import java.util.List;
 
 
 @Transactional(propagation=Propagation.REQUIRED, readOnly=false, noRollbackFor=Exception.class)
@@ -66,9 +71,9 @@ public class ShellCommandsHolder {
 	}
 
 	@ShellMethod(key = COMMAND_CREATE_GENRE, value = "Create genre", group = GENRE_GROUP)
-	public Object createGenre(@ShellOption() String title) {
+	public String createGenre(@ShellOption() String title) {
 		try {
-			return genreService.create(new Genre(title));
+			return genreService.create(new Genre(title)).toString();
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -76,7 +81,7 @@ public class ShellCommandsHolder {
 
 	@ShellMethod(key = COMMAND_DELETE_GENRE, value = "Delete genre", group = GENRE_GROUP)
 	@ShellMethodAvailability("hasGenres")
-	public Object deleteGenre(@ShellOption() Long id) {
+	public String deleteGenre(@ShellOption() Long id) {
 		try {
 			genreService.delete(id);
 			return OK_MESSAGE;
@@ -97,9 +102,9 @@ public class ShellCommandsHolder {
 	}
 
 	@ShellMethod(key = COMMAND_CREATE_AUTHOR, value = "Create author", group = AUTHOR_GROUP)
-	public Object createAuthor(@ShellOption() String name) {
+	public String createAuthor(@ShellOption() String name) {
 		try {
-			return authorService.create(new Author(name));
+			return authorService.create(new Author(name)).toString();
 		} catch (Exception e) {
 			return e.getMessage();
 		}
@@ -107,7 +112,7 @@ public class ShellCommandsHolder {
 
 	@ShellMethod(key = COMMAND_DELETE_AUTHOR, value = "Delete author", group = AUTHOR_GROUP)
 	@ShellMethodAvailability("hasAuthors")
-	public Object deleteAuthor(@ShellOption() Long id) {
+	public String deleteAuthor(@ShellOption() Long id) {
 		try {
 			authorService.delete(id);
 			return OK_MESSAGE;
@@ -130,7 +135,7 @@ public class ShellCommandsHolder {
 
 	@ShellMethod(key = COMMAND_CREATE_BOOK, value = "Create book", group = BOOK_GROUP)
 	@ShellMethodAvailability("canCreateBook")
-	public Object createBook(@ShellOption() String title, @ShellOption() Long authorId, @ShellOption() Long genreId) {
+	public String createBook(@ShellOption() String title, @ShellOption() Long authorId, @ShellOption() Long genreId) {
 		try {
 			Author author = authorService.getById(authorId);
 			Genre genre = genreService.getById(genreId);
@@ -138,14 +143,14 @@ public class ShellCommandsHolder {
 			book.setTitle(title);
 			book.getAuthors().add(author);
 			book.getGenres().add(genre);
-			return bookService.create(book);
+			return bookService.create(book).toString();
 		} catch (Exception e) {
 			return e.getMessage();
 		}
 	}
 
 	@ShellMethod(key = COMMAND_DELETE_BOOK, value = "Delete book", group = BOOK_GROUP)
-	public Object deleteBook(@ShellOption() Long id) {
+	public String deleteBook(@ShellOption() Long id) {
 		try {
 			bookService.delete(id);
 			return OK_MESSAGE;
@@ -157,77 +162,95 @@ public class ShellCommandsHolder {
 	}
 
 	@ShellMethod(key = COMMAND_ADD_AUTHOR, value = "Add author to book", group = BOOK_GROUP)
-	public Object addAuthor(@ShellOption() Long bookId, @ShellOption() Long authorId) {
+	public String addAuthor(@ShellOption() Long bookId, @ShellOption() Long authorId) {
 		try {
 			Book book = bookService.getById(bookId);
 			Author author = authorService.getById(authorId);
 			book.getAuthors().add(author);
-			return bookService.update(book);
+			return bookService.update(book).toString();
 		} catch (Exception e) {
 			return e.getMessage();
 		}
 	}
 
 	@ShellMethod(key = COMMAND_REMOVE_AUTHOR, value = "Remove author from book", group = BOOK_GROUP)
-	public Object removeAuthor(@ShellOption() Long bookId, @ShellOption() Long authorId) {
+	public String removeAuthor(@ShellOption() Long bookId, @ShellOption() Long authorId) {
 		try {
 			Book book = bookService.getById(bookId);
 			Author author = authorService.getById(authorId);
 			book.getAuthors().remove(author);
-			return bookService.update(book);
+			return bookService.update(book).toString();
 		} catch (Exception e) {
 			return e.getMessage();
 		}
 	}
 
 	@ShellMethod(key = COMMAND_ADD_GENRE, value = "Add genre to book", group = BOOK_GROUP)
-	public Object addGenre(@ShellOption() Long bookId, @ShellOption() Long genreId) {
+	public String addGenre(@ShellOption() Long bookId, @ShellOption() Long genreId) {
 		try {
 			Book book = bookService.getById(bookId);
 			Genre genre = genreService.getById(genreId);
 			book.getGenres().add(genre);
-			return bookService.update(book);
+			return bookService.update(book).toString();
 		} catch (Exception e) {
 			return e.getMessage();
 		}
 	}
 
 	@ShellMethod(key = COMMAND_REMOVE_GENRE, value = "Remove genre from book", group = BOOK_GROUP)
-	public Object removeGenre(@ShellOption() Long bookId, @ShellOption() Long genreId) {
+	public String removeGenre(@ShellOption() Long bookId, @ShellOption() Long genreId) {
 		try {
 			Book book = bookService.getById(bookId);
 			Genre genre = genreService.getById(genreId);
 			book.getGenres().remove(genre);
-			return bookService.update(book);
+			return bookService.update(book).toString();
 		} catch (Exception e) {
 			return e.getMessage();
 		}
 	}
 	
 	@ShellMethod(key = COMMAND_SHOW_COMMENTS, value = "Show comments", group = COMMENT_GROUP)
-	public Object showComments(@ShellOption() Long bookId) {
+	public List<String> showComments(@ShellOption() Long bookId) {
+		List<String> result = Lists.newArrayList();
 		try {
-			return commentService.getCommentsByBookId(bookId);
+			for(Comment comment : commentService.getCommentsByBookId(bookId)) {
+				result.add(comment.toString());
+			}
+			return result;
 		} catch (Exception e) {
-			return e.getMessage();
+			return ImmutableList.of(e.getMessage());
+		}
+	}
+	
+	@ShellMethod(key = COMMAND_SHOW_ALL_COMMENTS, value = "Show all comments", group = COMMENT_GROUP)
+	public List<String> showAllComments() {
+		List<String> result = Lists.newArrayList();
+		try {
+			for(Comment comment : commentService.getAllComments()) {
+				result.add(comment.toString());
+			}
+			return result;
+		} catch (Exception e) {
+			return ImmutableList.of(e.getMessage());
 		}
 	}
 
 	@ShellMethod(key = COMMAND_CREATE_COMMENT, value = "Create comment", group = COMMENT_GROUP)
-	public Object createComment(@ShellOption() Long bookId, @ShellOption() String message) {
+	public String createComment(@ShellOption() Long bookId, @ShellOption() String message) {
 		try {
+			Book book = bookService.getById(bookId);
 			Comment newComment = new Comment();
-			newComment.setBookId(bookId);
+			newComment.setBook(book);
 			newComment.setMessage(message);
 			Comment createdComment = commentService.create(newComment);
-			return createdComment;
+			return createdComment.toString();
 		} catch (Exception e) {
 			return e.getMessage();
 		}
 	}
 
 	@ShellMethod(key = COMMAND_DELETE_COMMENT, value = "Delete comment", group = COMMENT_GROUP)
-	public Object deleteComment(@ShellOption() Long id) {
+	public String deleteComment(@ShellOption() Long id) {
 		try {
 			commentService.delete(id);
 			return OK_MESSAGE;

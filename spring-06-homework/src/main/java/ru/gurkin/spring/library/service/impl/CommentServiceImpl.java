@@ -41,7 +41,9 @@ public class CommentServiceImpl implements CommentService{
 	public Comment create(Comment comment) {
 		checkNotNull(comment, COMMENT_ERROR);
 		checkArgument(comment.getId() == null, NULL_ID_ERROR);
-		checkArgument(comment.getBookId() != null, BOOK_ID_ERROR);
+		checkArgument(comment.getBook() != null, BOOK_ID_ERROR);
+		checkArgument(comment.getBook().getAuthors() != null, BOOK_ID_ERROR);
+		checkArgument(comment.getBook().getGenres() != null, BOOK_ID_ERROR);
 		checkArgument(!Strings.isNullOrEmpty(comment.getMessage()), MESSAGE_ERROR);
 		return dao.create(comment);
 	}
@@ -50,7 +52,7 @@ public class CommentServiceImpl implements CommentService{
 	public Comment update(Comment comment) {
 		checkNotNull(comment, COMMENT_ERROR);
 		checkArgument(comment.getId() != null, NOT_NULL_ID_ERROR);
-		checkArgument(comment.getBookId() != null, BOOK_ID_ERROR);
+		checkArgument(comment.getBook() != null, BOOK_ID_ERROR);
 		checkArgument(!Strings.isNullOrEmpty(comment.getMessage()), MESSAGE_ERROR);
 		return dao.update(comment);
 	}
@@ -65,6 +67,12 @@ public class CommentServiceImpl implements CommentService{
 	public List<Comment> getCommentsByBookId(Long bookId) {
 		checkNotNull(bookId, BOOK_ID_ERROR);
 		return dao.getCommentsByBookId(bookId);
+	}
+
+	@Override
+	public List<Comment> getAllComments() {
+		List<Comment> comments = dao.getAll();
+		return comments;
 	}
 
 }

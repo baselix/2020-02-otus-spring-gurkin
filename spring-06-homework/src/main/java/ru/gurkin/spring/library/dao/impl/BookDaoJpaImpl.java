@@ -31,7 +31,6 @@ public class BookDaoJpaImpl implements BookDao {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
-	//@org.springframework.data.jpa.repository.Query("select distinct b from Book b left join b.authors a left join b.genres g ")
 	@Override
 	public List<Book> getAll() {
 		TypedQuery<Book> query = entityManager.createQuery(SIMPLE_BOOK_QUERY, Book.class);

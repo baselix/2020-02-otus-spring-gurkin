@@ -9,7 +9,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.google.common.base.Strings;
 
 import ru.gurkin.spring.library.dao.BookDao;
+import ru.gurkin.spring.library.dao.CommentDao;
 import ru.gurkin.spring.library.model.Book;
+import ru.gurkin.spring.library.model.Comment;
 import ru.gurkin.spring.library.service.BookService;
 
 import static com.google.common.base.Preconditions.*;
@@ -20,9 +22,11 @@ import static ru.gurkin.spring.library.model.ErrorConstants.*;
 public class BookServiceImpl implements BookService{
 
 	private final BookDao dao;
+	private final CommentDao commentDao;
 
-	public BookServiceImpl(BookDao dao) {
+	public BookServiceImpl(BookDao dao, CommentDao commentDao) {
 		this.dao = dao;
+		this.commentDao = commentDao;
 	}
 
 	@Override
@@ -61,7 +65,19 @@ public class BookServiceImpl implements BookService{
 	@Override
 	public void delete(Long id) {
 		checkNotNull(id, ID_ERROR);
-		dao.delete(id);
+		Book book = getById(id);
+		if(book != null) {
+			book.getAuthors().clear();
+			book.getGenres().clear();
+			//очищаем авторов и жанры
+			dao.update(book);
+			//удаляем комментарии
+			for(Comment comment : commentDao.getCommentsByBookId(book.getId())) {
+				commentDao.delete(comment.getId());
+			}
+			//завершаем удаление книги
+			dao.delete(id);
+		}
 	}
 
 	@Override

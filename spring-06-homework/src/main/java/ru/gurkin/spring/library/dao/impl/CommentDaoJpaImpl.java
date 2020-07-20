@@ -18,8 +18,9 @@ import ru.gurkin.spring.library.model.Comment;
 @Repository
 public class CommentDaoJpaImpl implements CommentDao {
 
-	private static final String COMMENT_QUERY = "select distinct c from Comment c ";
-	private static final String COMMENT_WHERE_ID = "where c.bookId = :id";
+	private static final String COMMENT_QUERY = "select distinct c from Comment c join fetch c.book ";
+//	private static final String ALL_COMMENT_QUERY = "select distinct c from Comment c, Book b, Author a, Genre g join fetch c.book join fetch c.book.authors join fetch c.book.genres";
+	private static final String COMMENT_WHERE_ID = "where c.book.id = :id";
 	private static final String DELETE_COMMENT_QUERY = "delete from Comment c where c.id = :id";
 
 	private static final String ID_PARAM = "id";

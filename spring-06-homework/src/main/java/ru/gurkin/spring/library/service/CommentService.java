@@ -6,6 +6,8 @@ import ru.gurkin.spring.library.model.Comment;
 
 public interface CommentService {
 	
+	List<Comment> getAllComments();
+	
 	List<Comment> getCommentsByBookId(Long bookId);
 
 	Comment getById(Long id);
