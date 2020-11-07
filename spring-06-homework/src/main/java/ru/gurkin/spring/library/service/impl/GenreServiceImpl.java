@@ -1,22 +1,17 @@
 package ru.gurkin.spring.library.service.impl;
 
-import static com.google.common.base.Preconditions.checkArgument;
-import static com.google.common.base.Preconditions.checkNotNull;
-import static ru.gurkin.spring.library.model.ErrorConstants.*;
-
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.google.common.base.Strings;
-
+import org.springframework.stereotype.Service;
 import ru.gurkin.spring.library.dao.GenreDao;
 import ru.gurkin.spring.library.model.Genre;
 import ru.gurkin.spring.library.service.GenreService;
 
-@Transactional(propagation=Propagation.REQUIRED, readOnly=false, noRollbackFor=Exception.class)
+import java.util.List;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static ru.gurkin.spring.library.model.ErrorConstants.*;
+
 @Service
 public class GenreServiceImpl implements GenreService{
 

@@ -17,4 +17,6 @@ public class ErrorConstants {
 	public static final String MESSAGE_ERROR = "Message must be not null or empty";
 	public static final String BOOK_NO_AUTHOR_ERROR = "Book needs an author";
 	public static final String BOOK_NO_GENRE_ERROR = "Book needs an genre";
+
+	private ErrorConstants(){}
 }

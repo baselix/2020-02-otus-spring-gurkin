@@ -58,8 +58,8 @@ class GenreDaoTest {
 	@DisplayName("ищет жанры")
 	void findTest() {
 		List<Genre> genres = genreDao.find(TITLE_FILTER);
-		for (Genre author : genres) {
-			assertTrue(author.getTitle().contains(TITLE_FILTER));
+		for (Genre genre : genres) {
+			assertTrue(genre.getTitle().contains(TITLE_FILTER));
 		}
 	}
 

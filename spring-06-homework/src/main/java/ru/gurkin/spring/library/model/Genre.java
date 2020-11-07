@@ -7,16 +7,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.experimental.SuperBuilder;
+import lombok.*;
 
 @Data
-@SuperBuilder
 @NoArgsConstructor
-@AllArgsConstructor(access = AccessLevel.PUBLIC)
 @Entity
 @Table(name = "genres")
 public class Genre {
@@ -29,6 +23,11 @@ public class Genre {
 	private String title;
 
 	public Genre(String title) {
+		this.title = title;
+	}
+	
+	public Genre(Long id, String title) {
+		this.id = id;
 		this.title = title;
 	}
 }

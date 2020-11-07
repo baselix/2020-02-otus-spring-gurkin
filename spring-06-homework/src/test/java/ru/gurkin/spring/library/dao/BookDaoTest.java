@@ -21,21 +21,31 @@ import ru.gurkin.spring.library.model.Author;
 import ru.gurkin.spring.library.model.Book;
 import ru.gurkin.spring.library.model.Genre;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 @ActiveProfiles("test")
 @DataJpaTest
-@Transactional
 @Import({BookDaoJpaImpl.class, AuthorDaoJpaImpl.class, GenreDaoJpaImpl.class})
 @DisplayName("Класс dao для книг корректно ")
 class BookDaoTest {
 
 	private static final String TITLE_FILTER = "test book";
 
+	@PersistenceContext
+	private final EntityManager entityManager;
+
 	@Autowired
-	BookDaoJpaImpl bookDao;
+	public BookDaoJpaImpl bookDao;
 	@Autowired
-	AuthorDaoJpaImpl authorDao;
+	public AuthorDaoJpaImpl authorDao;
 	@Autowired
-	GenreDaoJpaImpl genreDao;
+	public GenreDaoJpaImpl genreDao;
+
+	@Autowired
+	BookDaoTest(EntityManager entityManager) {
+		this.entityManager = entityManager;
+	}
 
 	@Test
 	@DisplayName("получает все книги")
@@ -64,12 +74,12 @@ class BookDaoTest {
 		Genre genre = genreDao.getById(1L);
 		newBook.getGenres().add(genre);
 		newBook = bookDao.create(newBook);
-		assertEquals(newBook.getAuthors().isEmpty(), false);
-		assertEquals(newBook.getGenres().isEmpty(), false);
+		assertFalse(newBook.getAuthors().isEmpty());
+		assertFalse(newBook.getGenres().isEmpty());
 		Book foundedBook = bookDao.getById(newBook.getId());
 		assertEquals(newBook, foundedBook);
-		assertEquals(foundedBook.getAuthors().isEmpty(), false);
-		assertEquals(foundedBook.getGenres().isEmpty(), false);
+		assertFalse(foundedBook.getAuthors().isEmpty());
+		assertFalse(foundedBook.getGenres().isEmpty());
 	}
 
 	@Test
@@ -101,6 +111,7 @@ class BookDaoTest {
 
 	@Test
 	@DisplayName("удаляет книги")
+	@Transactional
 	void deleteTest() {
 		Book newBook = new Book();
 		newBook.setTitle("new book");
@@ -109,6 +120,8 @@ class BookDaoTest {
 		Genre genre = genreDao.getById(1L);
 		newBook.getGenres().add(genre);
 		newBook = bookDao.create(newBook);
+		flushAndClear();
+
 		long id = newBook.getId();
 		boolean isIdFound = false;
 		List<Book> books = bookDao.getAll();
@@ -121,6 +134,8 @@ class BookDaoTest {
 		assertTrue(isIdFound);
 		bookDao.delete(id);
 
+		flushAndClear();
+
 		isIdFound = false;
 		books = bookDao.getAll();
 		for (Book book : books) {
@@ -130,5 +145,10 @@ class BookDaoTest {
 			}
 		}
 		assertFalse(isIdFound);
+	}
+
+	void flushAndClear() {
+		entityManager.flush();
+		entityManager.clear();
 	}
 }

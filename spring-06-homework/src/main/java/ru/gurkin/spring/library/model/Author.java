@@ -7,8 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @Data
 @NoArgsConstructor
@@ -23,6 +22,11 @@ public class Author {
 	private String name;
 
 	public Author(String name) {
+		this.name = name;
+	}
+
+	public Author(Long id, String name) {
+		this.id = id;
 		this.name = name;
 	}
 }

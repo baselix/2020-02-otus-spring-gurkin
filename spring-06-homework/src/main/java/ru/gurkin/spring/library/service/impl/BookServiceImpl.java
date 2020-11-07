@@ -1,23 +1,19 @@
 package ru.gurkin.spring.library.service.impl;
 
-import java.util.List;
-
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.google.common.base.Strings;
-
+import org.springframework.stereotype.Service;
 import ru.gurkin.spring.library.dao.BookDao;
 import ru.gurkin.spring.library.dao.CommentDao;
 import ru.gurkin.spring.library.model.Book;
 import ru.gurkin.spring.library.model.Comment;
 import ru.gurkin.spring.library.service.BookService;
 
-import static com.google.common.base.Preconditions.*;
+import java.util.List;
+
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 import static ru.gurkin.spring.library.model.ErrorConstants.*;
 
-@Transactional(propagation=Propagation.REQUIRED, readOnly=false, noRollbackFor=Exception.class)
 @Service
 public class BookServiceImpl implements BookService{
 
@@ -31,8 +27,7 @@ public class BookServiceImpl implements BookService{
 
 	@Override
 	public List<Book> getAll() {
-		List<Book> books = dao.getAll(); 
-		return books;
+		return dao.getAll();
 	}
 
 	@Override
@@ -46,10 +41,9 @@ public class BookServiceImpl implements BookService{
 		checkNotNull(book, BOOK_ERROR);
 		checkArgument(book.getId() == null, NULL_ID_ERROR);
 		checkArgument(!Strings.isNullOrEmpty(book.getTitle()), TITLE_ERROR);
-		checkArgument(book.getAuthors().size() > 0, BOOK_NO_AUTHOR_ERROR);
-		checkArgument(book.getGenres().size() > 0, BOOK_NO_GENRE_ERROR);
-		Book createdBook = dao.create(book); 
-		return createdBook;
+		checkArgument(!book.getAuthors().isEmpty(), BOOK_NO_AUTHOR_ERROR);
+		checkArgument(!book.getGenres().isEmpty(), BOOK_NO_GENRE_ERROR);
+		return dao.create(book);
 	}
 
 	@Override
@@ -57,8 +51,8 @@ public class BookServiceImpl implements BookService{
 		checkNotNull(book, BOOK_ERROR);
 		checkArgument(book.getId() != null, NOT_NULL_ID_ERROR);
 		checkArgument(!Strings.isNullOrEmpty(book.getTitle()), TITLE_ERROR);
-		checkArgument(book.getAuthors().size() > 0, BOOK_NO_AUTHOR_ERROR);
-		checkArgument(book.getGenres().size() > 0, BOOK_NO_GENRE_ERROR);
+		checkArgument(!book.getAuthors().isEmpty(), BOOK_NO_AUTHOR_ERROR);
+		checkArgument(!book.getGenres().isEmpty(), BOOK_NO_GENRE_ERROR);
 		return dao.update(book);
 	}
 

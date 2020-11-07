@@ -19,4 +19,6 @@ public class ShellCommands {
 	public static final String COMMAND_SHOW_ALL_COMMENTS = "show all comments";
 	public static final String COMMAND_CREATE_COMMENT = "create comment";
 	public static final String COMMAND_DELETE_COMMENT = "delete comment";
+
+	private ShellCommands(){}
 }
