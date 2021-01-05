@@ -1,18 +1,11 @@
 package ru.gurkin.spring.library.shell;
 
-import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.shell.Availability;
-import org.springframework.shell.standard.ShellCommandGroup;
-import org.springframework.shell.standard.ShellComponent;
-import org.springframework.shell.standard.ShellMethod;
-import org.springframework.shell.standard.ShellMethodAvailability;
-import org.springframework.shell.standard.ShellOption;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
-
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.shell.Availability;
+import org.springframework.shell.standard.*;
+import org.springframework.transaction.annotation.Transactional;
 import ru.gurkin.spring.library.model.Author;
 import ru.gurkin.spring.library.model.Book;
 import ru.gurkin.spring.library.model.Comment;
@@ -22,12 +15,11 @@ import ru.gurkin.spring.library.service.BookService;
 import ru.gurkin.spring.library.service.CommentService;
 import ru.gurkin.spring.library.service.GenreService;
 
-import static ru.gurkin.spring.library.model.ShellCommands.*;
-
 import java.util.List;
 
+import static ru.gurkin.spring.library.model.ShellCommands.*;
 
-//@Transactional(propagation=Propagation.REQUIRED, readOnly=false, noRollbackFor=Exception.class)
+
 @ShellComponent
 @ShellCommandGroup("Library operations")
 public class ShellCommandsHolder {
@@ -123,12 +115,12 @@ public class ShellCommandsHolder {
 		}
 	}
 
+	@Transactional
 	@ShellMethod(key = COMMAND_SHOW_BOOKS, value = "Show all books", group = BOOK_GROUP)
 	public List<Book> showBooks() {
 		return bookService.getAll();
 	}
 
-	@Transactional
 	@ShellMethod(key = COMMAND_CREATE_BOOK, value = "Create book", group = BOOK_GROUP)
 	@ShellMethodAvailability("canCreateBook")
 	public String createBook(@ShellOption() String title, @ShellOption() Long authorId, @ShellOption() Long genreId) {
@@ -157,7 +149,6 @@ public class ShellCommandsHolder {
 		}
 	}
 
-	@Transactional
 	@ShellMethod(key = COMMAND_ADD_AUTHOR, value = "Add author to book", group = BOOK_GROUP)
 	public String addAuthor(@ShellOption() Long bookId, @ShellOption() Long authorId) {
 		try {
@@ -170,7 +161,6 @@ public class ShellCommandsHolder {
 		}
 	}
 
-	@Transactional
 	@ShellMethod(key = COMMAND_REMOVE_AUTHOR, value = "Remove author from book", group = BOOK_GROUP)
 	public String removeAuthor(@ShellOption() Long bookId, @ShellOption() Long authorId) {
 		try {
@@ -183,7 +173,6 @@ public class ShellCommandsHolder {
 		}
 	}
 
-	@Transactional
 	@ShellMethod(key = COMMAND_ADD_GENRE, value = "Add genre to book", group = BOOK_GROUP)
 	public String addGenre(@ShellOption() Long bookId, @ShellOption() Long genreId) {
 		try {
@@ -196,7 +185,6 @@ public class ShellCommandsHolder {
 		}
 	}
 
-	@Transactional
 	@ShellMethod(key = COMMAND_REMOVE_GENRE, value = "Remove genre from book", group = BOOK_GROUP)
 	public String removeGenre(@ShellOption() Long bookId, @ShellOption() Long genreId) {
 		try {
@@ -209,12 +197,12 @@ public class ShellCommandsHolder {
 		}
 	}
 
-	@Transactional
 	@ShellMethod(key = COMMAND_SHOW_COMMENTS, value = "Show comments", group = COMMENT_GROUP)
 	public List<String> showComments(@ShellOption() Long bookId) {
 		List<String> result = Lists.newArrayList();
 		try {
-			for(Comment comment : commentService.getCommentsByBookId(bookId)) {
+			Book book = bookService.getById(bookId);
+			for(Comment comment : book.getComments()) {
 				result.add(comment.toString());
 			}
 			return result;
@@ -223,7 +211,6 @@ public class ShellCommandsHolder {
 		}
 	}
 
-	@Transactional
 	@ShellMethod(key = COMMAND_SHOW_ALL_COMMENTS, value = "Show all comments", group = COMMENT_GROUP)
 	public List<String> showAllComments() {
 		List<String> result = Lists.newArrayList();
@@ -237,7 +224,6 @@ public class ShellCommandsHolder {
 		}
 	}
 
-	@Transactional
 	@ShellMethod(key = COMMAND_CREATE_COMMENT, value = "Create comment", group = COMMENT_GROUP)
 	public String createComment(@ShellOption() Long bookId, @ShellOption() String message) {
 		try {

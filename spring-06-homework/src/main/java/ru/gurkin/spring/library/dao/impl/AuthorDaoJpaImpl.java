@@ -1,7 +1,6 @@
 package ru.gurkin.spring.library.dao.impl;
 
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 import ru.gurkin.spring.library.dao.AuthorDao;
 import ru.gurkin.spring.library.model.Author;
 
@@ -28,40 +27,28 @@ public class AuthorDaoJpaImpl implements AuthorDao {
 		this.entityManager = entityManager;
 	}
 
-	@Transactional
 	@Override
 	public List<Author> getAll() {
 		TypedQuery<Author> query = entityManager.createQuery(AUTHOR_QUERY, Author.class);
 		return query.getResultList();
 	}
 
-	@Transactional
 	@Override
 	public Author getById(Long id) {
 		return entityManager.find(Author.class, id);
 	}
 
-	@Transactional
 	@Override
 	public Author create(Author author) {
 		entityManager.persist(author);
 		return author;
 	}
 
-	@Transactional
 	@Override
 	public Author update(Author author) {
-		Author old = getById(author.getId());
-		if (old == null) {
-			throw new IllegalStateException(AUTHOR_NOT_FOUND);
-		}
-		if (!old.getName().equals(author.getName())) {
-			return entityManager.merge(author);
-		}
-		return author;
+		return entityManager.merge(author);
 	}
 
-	@Transactional
 	@Override
 	public void delete(Long id) {
 		Author author = getById(id);
@@ -70,7 +57,6 @@ public class AuthorDaoJpaImpl implements AuthorDao {
 		}
 	}
 
-	@Transactional
 	@Override
 	public List<Author> find(String nameFilter) {
 		TypedQuery<Author> query = entityManager.createQuery(AUTHOR_QUERY + AUTHOR_WHERE_NAME, Author.class);

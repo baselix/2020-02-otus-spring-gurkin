@@ -6,8 +6,6 @@ import ru.gurkin.spring.library.model.Comment;
 
 public interface CommentDao {
 	
-	List<Comment> getCommentsByBookId(Long id);
-
 	Comment getById(Long id);
 
 	Comment create(Comment model);

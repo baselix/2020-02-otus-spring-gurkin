@@ -2,6 +2,7 @@ package ru.gurkin.spring.library.service.impl;
 
 import com.google.common.base.Strings;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import ru.gurkin.spring.library.dao.BookDao;
 import ru.gurkin.spring.library.dao.CommentDao;
 import ru.gurkin.spring.library.model.Book;
@@ -25,17 +26,20 @@ public class BookServiceImpl implements BookService{
 		this.commentDao = commentDao;
 	}
 
+	@Transactional
 	@Override
 	public List<Book> getAll() {
 		return dao.getAll();
 	}
 
+	@Transactional
 	@Override
 	public Book getById(Long id) {
 		checkNotNull(id, ID_ERROR);
 		return dao.getById(id);
 	}
 
+	@Transactional
 	@Override
 	public Book create(Book book) {
 		checkNotNull(book, BOOK_ERROR);
@@ -46,6 +50,7 @@ public class BookServiceImpl implements BookService{
 		return dao.create(book);
 	}
 
+	@Transactional
 	@Override
 	public Book update(Book book) {
 		checkNotNull(book, BOOK_ERROR);
@@ -56,6 +61,7 @@ public class BookServiceImpl implements BookService{
 		return dao.update(book);
 	}
 
+	@Transactional
 	@Override
 	public void delete(Long id) {
 		checkNotNull(id, ID_ERROR);
@@ -66,7 +72,7 @@ public class BookServiceImpl implements BookService{
 			//очищаем авторов и жанры
 			dao.update(book);
 			//удаляем комментарии
-			for(Comment comment : commentDao.getCommentsByBookId(book.getId())) {
+			for(Comment comment : book.getComments()) {
 				commentDao.delete(comment.getId());
 			}
 			//завершаем удаление книги
@@ -74,12 +80,14 @@ public class BookServiceImpl implements BookService{
 		}
 	}
 
+	@Transactional
 	@Override
 	public List<Book> search(String titleFilter) {
 		checkArgument(!Strings.isNullOrEmpty(titleFilter), TITLE_FILTER_ERROR);
 		return dao.search(titleFilter);
 	}
 
+	@Transactional
 	@Override
 	public Book getByTitle(String title) {
 		checkArgument(!Strings.isNullOrEmpty(title), TITLE_ERROR);

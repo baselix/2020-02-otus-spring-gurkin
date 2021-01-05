@@ -7,10 +7,6 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
-import lombok.*;
-
-@Data
-@NoArgsConstructor
 @Entity
 @Table(name = "genres")
 public class Genre {
@@ -22,6 +18,9 @@ public class Genre {
 	@Column(name = "title", nullable = false, unique = true)
 	private String title;
 
+	public Genre() {
+	}
+
 	public Genre(String title) {
 		this.title = title;
 	}
@@ -29,5 +28,29 @@ public class Genre {
 	public Genre(Long id, String title) {
 		this.id = id;
 		this.title = title;
+	}
+
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+	public String getTitle() {
+		return title;
+	}
+
+	public void setTitle(String title) {
+		this.title = title;
+	}
+
+	@Override
+	public String toString() {
+		return "Genre{" +
+				"id=" + id +
+				", title='" + title + '\'' +
+				'}';
 	}
 }

@@ -65,14 +65,6 @@ class CommentDaoTest {
 		assertEquals(newComment, updatedComment);
 	}
 
-	@Test
-	@DisplayName("ищет комментарии по bookId")
-	void findTest() {
-		List<Comment> comments = commentDao.getCommentsByBookId(1L);
-		for (Comment comment : comments) {
-			assertEquals(1L, comment.getBook().getId());
-		}
-	}
 
 	@Test
 	@DisplayName("удаляет комментарий")

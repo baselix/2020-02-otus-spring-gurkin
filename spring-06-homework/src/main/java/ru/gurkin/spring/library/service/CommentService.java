@@ -8,8 +8,6 @@ public interface CommentService {
 	
 	List<Comment> getAllComments();
 	
-	List<Comment> getCommentsByBookId(Long bookId);
-
 	Comment getById(Long id);
 
 	Comment create(Comment model);
