@@ -16,7 +16,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ActiveProfiles("test")
 @DataJpaTest
 @DisplayName("Репозиторий жанров корректно ")
-class GenreDaoTest {
+class GenreRepositoryTest {
 
 	private static final String TITLE_FILTER = "test genre";
 

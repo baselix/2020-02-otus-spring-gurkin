@@ -17,7 +17,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 @ActiveProfiles("test")
 @DataJpaTest
 @DisplayName("Репозиторий комментариев корректно ")
-class CommentDaoTest {
+class CommentRepositoryTest {
 
 	@Autowired
 	CommentRepository commentRepository;

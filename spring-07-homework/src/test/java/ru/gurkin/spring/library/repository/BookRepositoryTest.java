@@ -4,9 +4,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.transaction.annotation.Transactional;
 import ru.gurkin.spring.library.model.Author;
 import ru.gurkin.spring.library.model.Book;
 import ru.gurkin.spring.library.model.Genre;
@@ -25,16 +23,16 @@ class BookRepositoryTest {
 	private static final String TITLE_FILTER = "test book";
 
 	@Autowired
-	BookRepository bookDao;
+	BookRepository bookRepository;
 	@Autowired
-	AuthorRepository authorDao;
+	AuthorRepository authorRepository;
 	@Autowired
-	GenreRepository genreDao;
+	GenreRepository genreRepository;
 
 	@Test
 	@DisplayName("получает все книги")
 	void getAllTest() {
-		List<Book> allBooks = (List<Book>) bookDao.findAll();
+		List<Book> allBooks = (List<Book>) bookRepository.findAll();
 		for(Book book : allBooks) {
 			System.out.println(book);
 		}
@@ -44,7 +42,7 @@ class BookRepositoryTest {
 	@Test
 	@DisplayName("получает книгу по названию")
 	void geteByTitleTest() {
-		Book foundedBook = bookDao.findByTitle("test book 3");
+		Book foundedBook = bookRepository.findByTitle("test book 3");
 		assertEquals("test book 3", foundedBook.getTitle());
 	}
 
@@ -53,14 +51,14 @@ class BookRepositoryTest {
 	void createAndGetTest() {
 		Book newBook = new Book();
 		newBook.setTitle("new book");
-		Author author = authorDao.findById(1L).orElse(null);
+		Author author = authorRepository.findById(1L).orElse(null);
 		newBook.getAuthors().add(author);
-		Genre genre = genreDao.findById(1L).orElse(null);
+		Genre genre = genreRepository.findById(1L).orElse(null);
 		newBook.getGenres().add(genre);
-		newBook = bookDao.save(newBook);
+		newBook = bookRepository.save(newBook);
 		assertFalse(newBook.getAuthors().isEmpty());
 		assertFalse(newBook.getGenres().isEmpty());
-		Book foundedBook = bookDao.findById(newBook.getId()).orElse(null);
+		Book foundedBook = bookRepository.findById(newBook.getId()).orElse(null);
 		assertEquals(newBook, foundedBook);
 		assertFalse(foundedBook.getAuthors().isEmpty());
 		assertFalse(foundedBook.getGenres().isEmpty());
@@ -69,7 +67,7 @@ class BookRepositoryTest {
 	@Test
 	@DisplayName("обновляет книгу")
 	void updateTest() {
-		Book book = bookDao.findById(1L).orElse(null);
+		Book book = bookRepository.findById(1L).orElse(null);
 		Author author = new Author();
 		author.setId(2L);
 		author.setName("test author 2");
@@ -78,7 +76,7 @@ class BookRepositoryTest {
 		book.getGenres().remove(genre);
 		String title = "new title";
 		book.setTitle(title);
-		Book updatedBook = bookDao.save(book);
+		Book updatedBook = bookRepository.save(book);
 		assertEquals(title, updatedBook.getTitle());
 		assertTrue(updatedBook.getAuthors().contains(author));
 		assertFalse(updatedBook.getGenres().contains(genre));
@@ -87,7 +85,7 @@ class BookRepositoryTest {
 	@Test
 	@DisplayName("ищет книги")
 	void findTest() {
-		List<Book> books = bookDao.findByTitleLike(TITLE_FILTER);
+		List<Book> books = bookRepository.findByTitleLike(TITLE_FILTER);
 		for (Book book : books) {
 			assertTrue(book.getTitle().contains(TITLE_FILTER));
 		}
@@ -98,14 +96,14 @@ class BookRepositoryTest {
 	void deleteTest() {
 		Book newBook = new Book();
 		newBook.setTitle("new book");
-		Author author = authorDao.findById(1L).orElse(null);
+		Author author = authorRepository.findById(1L).orElse(null);
 		newBook.getAuthors().add(author);
-		Genre genre = genreDao.findById(1L).orElse(null);
+		Genre genre = genreRepository.findById(1L).orElse(null);
 		newBook.getGenres().add(genre);
-		newBook = bookDao.save(newBook);
+		newBook = bookRepository.save(newBook);
 		long id = newBook.getId();
 		boolean isIdFound = false;
-		List<Book> books = (List<Book>) bookDao.findAll();
+		List<Book> books = (List<Book>) bookRepository.findAll();
 		for (Book book : books) {
 			if (book.getId() == id) {
 				isIdFound = true;
@@ -113,10 +111,10 @@ class BookRepositoryTest {
 			}
 		}
 		assertTrue(isIdFound);
-		bookDao.deleteById(id);
+		bookRepository.deleteById(id);
 
 		isIdFound = false;
-		books = (List<Book>) bookDao.findAll();
+		books = (List<Book>) bookRepository.findAll();
 		for (Book book : books) {
 			if (book.getId() == id) {
 				isIdFound = true;
