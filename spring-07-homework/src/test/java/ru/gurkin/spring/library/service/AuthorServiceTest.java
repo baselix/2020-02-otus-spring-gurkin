@@ -28,7 +28,7 @@ import static ru.gurkin.spring.library.model.ErrorConstants.*;
 class AuthorServiceTest {
 
 	@MockBean
-	private AuthorRepository dao;
+	private AuthorRepository repository;
 
 	@InjectMocks
 	private AuthorServiceImpl service;

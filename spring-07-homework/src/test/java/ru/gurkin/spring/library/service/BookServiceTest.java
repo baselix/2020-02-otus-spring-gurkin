@@ -29,7 +29,7 @@ import static ru.gurkin.spring.library.model.ErrorConstants.*;
 class BookServiceTest {
 
 	@MockBean
-	private BookRepository dao;
+	private BookRepository repository;
 
 	@InjectMocks
 	private BookServiceImpl service;

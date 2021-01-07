@@ -28,7 +28,7 @@ import static ru.gurkin.spring.library.model.ErrorConstants.*;
 class GenreServiceTest {
 
 	@MockBean
-	private GenreRepository dao;
+	private GenreRepository repository;
 
 	@InjectMocks
 	private GenreServiceImpl service;
