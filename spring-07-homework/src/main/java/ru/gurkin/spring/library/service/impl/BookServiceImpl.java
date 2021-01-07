@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.common.base.Strings;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.gurkin.spring.library.model.Book;
 import ru.gurkin.spring.library.model.Comment;
 import ru.gurkin.spring.library.repository.BookRepository;
@@ -38,6 +39,7 @@ public class BookServiceImpl implements BookService{
 				.orElse(null);
 	}
 
+	@Transactional
 	@Override
 	public Book create(Book book) {
 		checkNotNull(book, BOOK_ERROR);
@@ -48,6 +50,7 @@ public class BookServiceImpl implements BookService{
 		return dao.save(book);
 	}
 
+	@Transactional
 	@Override
 	public Book update(Book book) {
 		checkNotNull(book, BOOK_ERROR);
@@ -58,6 +61,7 @@ public class BookServiceImpl implements BookService{
 		return dao.save(book);
 	}
 
+	@Transactional
 	@Override
 	public void delete(Long id) {
 		checkNotNull(id, ID_ERROR);

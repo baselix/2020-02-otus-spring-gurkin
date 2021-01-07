@@ -26,7 +26,7 @@ public class Book {
 	
 	@Fetch(FetchMode.SELECT)
     @BatchSize(size = 5)
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 			name = "book_author",
 			joinColumns = {
@@ -39,7 +39,7 @@ public class Book {
 	
 	@Fetch(FetchMode.SELECT)
     @BatchSize(size = 5)
-	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
+	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(
 			name = "book_genre",
 			joinColumns = {

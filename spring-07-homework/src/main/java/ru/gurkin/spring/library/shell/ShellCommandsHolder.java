@@ -11,6 +11,7 @@ import org.springframework.shell.standard.ShellOption;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 
+import org.springframework.transaction.annotation.Transactional;
 import ru.gurkin.spring.library.model.Author;
 import ru.gurkin.spring.library.model.Book;
 import ru.gurkin.spring.library.model.Comment;
@@ -129,6 +130,7 @@ public class ShellCommandsHolder {
 		}
 	}
 
+	@Transactional
 	@ShellMethod(key = COMMAND_CREATE_BOOK, value = "Create book", group = BOOK_GROUP)
 	@ShellMethodAvailability("canCreateBook")
 	public String createBook(@ShellOption() String title, @ShellOption() Long authorId, @ShellOption() Long genreId) {
@@ -157,6 +159,7 @@ public class ShellCommandsHolder {
 		}
 	}
 
+	@Transactional
 	@ShellMethod(key = COMMAND_ADD_AUTHOR, value = "Add author to book", group = BOOK_GROUP)
 	public String addAuthor(@ShellOption() Long bookId, @ShellOption() Long authorId) {
 		try {
@@ -169,6 +172,7 @@ public class ShellCommandsHolder {
 		}
 	}
 
+	@Transactional
 	@ShellMethod(key = COMMAND_REMOVE_AUTHOR, value = "Remove author from book", group = BOOK_GROUP)
 	public String removeAuthor(@ShellOption() Long bookId, @ShellOption() Long authorId) {
 		try {
@@ -181,6 +185,7 @@ public class ShellCommandsHolder {
 		}
 	}
 
+	@Transactional
 	@ShellMethod(key = COMMAND_ADD_GENRE, value = "Add genre to book", group = BOOK_GROUP)
 	public String addGenre(@ShellOption() Long bookId, @ShellOption() Long genreId) {
 		try {
@@ -193,6 +198,7 @@ public class ShellCommandsHolder {
 		}
 	}
 
+	@Transactional
 	@ShellMethod(key = COMMAND_REMOVE_GENRE, value = "Remove genre from book", group = BOOK_GROUP)
 	public String removeGenre(@ShellOption() Long bookId, @ShellOption() Long genreId) {
 		try {
@@ -204,7 +210,7 @@ public class ShellCommandsHolder {
 			return e.getMessage();
 		}
 	}
-	
+
 	@ShellMethod(key = COMMAND_SHOW_COMMENTS, value = "Show comments", group = COMMENT_GROUP)
 	public List<String> showComments(@ShellOption() Long bookId) {
 		List<String> result = Lists.newArrayList();
@@ -218,7 +224,7 @@ public class ShellCommandsHolder {
 			return ImmutableList.of(e.getMessage());
 		}
 	}
-	
+
 	@ShellMethod(key = COMMAND_SHOW_ALL_COMMENTS, value = "Show all comments", group = COMMENT_GROUP)
 	public List<String> showAllComments() {
 		List<String> result = Lists.newArrayList();

@@ -13,6 +13,8 @@ import ru.gurkin.spring.library.model.Author;
 import ru.gurkin.spring.library.repository.AuthorRepository;
 import ru.gurkin.spring.library.service.AuthorService;
 
+import org.springframework.transaction.annotation.Transactional;
+
 @Service
 public class AuthorServiceImpl implements AuthorService{
 
@@ -40,6 +42,7 @@ public class AuthorServiceImpl implements AuthorService{
 				orElse(null);
 	}
 
+	@Transactional
 	@Override
 	public Author create(Author author) {
 		checkNotNull(author, AUTHOR_ERROR);
@@ -48,6 +51,7 @@ public class AuthorServiceImpl implements AuthorService{
 		return dao.save(author);
 	}
 
+	@Transactional
 	@Override
 	public Author update(Author author) {
 		checkNotNull(author, AUTHOR_ERROR);
@@ -56,6 +60,7 @@ public class AuthorServiceImpl implements AuthorService{
 		return dao.save(author);
 	}
 
+	@Transactional
 	@Override
 	public void delete(Long id) {
 		checkNotNull(id, ID_ERROR);
