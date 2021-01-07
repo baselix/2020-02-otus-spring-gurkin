@@ -1,0 +1,23 @@
+insert into books (id, `title`) values (1, 'test book 1');
+insert into books (id, `title`) values (2, 'test book 2');
+insert into books (id, `title`) values (3, 'test book 3');
+insert into books (id, `title`) values (4, 'test book 4');
+insert into authors (id, `name`) values (1, 'test author 1');
+insert into authors (id, `name`) values (2, 'test author 2');
+insert into authors (id, `name`) values (3, 'test author 3');
+insert into authors (id, `name`) values (4, 'test author 4');
+insert into genres (id, `title`) values (1, 'test genre 1');
+insert into genres (id, `title`) values (2, 'test genre 2');
+insert into genres (id, `title`) values (3, 'test genre 3');
+insert into genres (id, `title`) values (4, 'test genre 4');
+insert into book_author (`book_id`, `author_id`) values (1, 1);
+insert into book_genre (`book_id`, `genre_id`) values (1, 1);
+insert into book_genre (`book_id`, `genre_id`) values (1, 2);
+insert into book_author (`book_id`, `author_id`) values (2, 1);
+insert into book_genre (`book_id`, `genre_id`) values (2, 4);
+insert into book_author (`book_id`, `author_id`) values (3, 2);
+insert into book_genre (`book_id`, `genre_id`) values (3, 3);
+insert into book_author (`book_id`, `author_id`) values (4, 3);
+insert into book_author (`book_id`, `author_id`) values (4, 4);
+insert into book_genre (`book_id`, `genre_id`) values (4, 4);
+insert into comments (id, `book_id`, `message`) values (1, 1, 'comment 1')
