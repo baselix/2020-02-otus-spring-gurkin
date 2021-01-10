@@ -1,0 +1,44 @@
+<mat-sidenav-container>
+  <mat-sidenav-content>
+    <mat-toolbar color="primary">
+      <div>
+        <a routerLink="/">
+          <img src="./assets/books.png" alt="Dmitriy Gurkin Library" width="64" height="64">
+        </a>
+      </div>
+      <div>
+        <a routerLink="/">
+          <mat-icon class="icon">home</mat-icon>
+          <span class="label">Menu</span>
+        </a>
+      </div>
+      <div>
+        <a routerLink="/authors">
+          <mat-icon class="icon">face</mat-icon>
+          <span class="label">Authors</span>
+        </a>
+      </div>
+      <div>
+        <a routerLink="/genres">
+          <mat-icon class="icon">subject</mat-icon>
+          <span class="label">Genres</span>
+        </a>
+      </div>
+      <div>
+        <a routerLink="/books">
+          <mat-icon class="icon">library_books</mat-icon>
+          <span class="label">Books</span>
+        </a>
+      </div>
+      <div>
+        <a routerLink="/about">
+          <mat-icon class="icon">info</mat-icon>
+          <span class="label">About</span>
+        </a>
+      </div>
+    </mat-toolbar>
+    <main>
+      <router-outlet></router-outlet>
+    </main>
+  </mat-sidenav-content>
+</mat-sidenav-container>
