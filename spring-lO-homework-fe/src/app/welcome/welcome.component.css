@@ -4,9 +4,9 @@
 
 .row-container {
   display: table;
-  width: 100%; /*Optional*/
-  table-layout: fixed; /*Optional*/
-  border-spacing: 10px; /*Optional*/
+  width: 100%;
+  table-layout: fixed;
+  border-spacing: 10px;
   text-align:center;
 }
 
