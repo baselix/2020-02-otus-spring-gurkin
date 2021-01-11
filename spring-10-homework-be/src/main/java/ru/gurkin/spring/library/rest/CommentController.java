@@ -8,7 +8,7 @@ import ru.gurkin.spring.library.service.CommentService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/comments")
+@RequestMapping("/comment")
 public class CommentController {
 
     private CommentService service;

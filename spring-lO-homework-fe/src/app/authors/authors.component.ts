@@ -1,29 +1,36 @@
-import { Component } from '@angular/core';
-import { DataSource } from '@angular/cdk/table';
-import {Observable} from 'rxjs/Observable';
+import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { AuthorService } from '../service/author.service';
 import { Author } from '../model/author'
+import {
+         PageEvent,
+         MatPaginator,
+         MatTableDataSource,
+       } from '@angular/material';
 
 @Component({
   selector: 'authors',
   templateUrl: './authors.component.html',
   styleUrls: ['./authors.component.css']
 })
-export class AuthorsComponent {
+export class AuthorsComponent implements AfterViewInit, OnInit {
   constructor(private authorService: AuthorService){}
+
   displayedColumns = ['id', 'name', 'edit', 'delete'];
-  dataSource = new AuthorsDataSource(this.authorService);
-}
 
-export class AuthorsDataSource extends DataSource<any> {
-  constructor(private authorService: AuthorService) {
-    super();
+  @ViewChild('paginator') paginator: MatPaginator;
+  public dataSource = new MatTableDataSource();
+
+  ngOnInit(){
+    this.authorService.fetchAuthors().subscribe(res => {
+      this.dataSource.data = res;
+    });
   }
 
-  connect(): Observable<Author[]> {
-    return this.authorService.fetchAuthors();
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
   }
 
-  disconnect() {
+  getNext(event: PageEvent) {
+    let offset = event.pageSize * event.pageIndex;
   }
 }

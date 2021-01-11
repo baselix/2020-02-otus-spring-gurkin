@@ -8,6 +8,6 @@ export class GenreService {
   constructor(private http: HttpClient) {}
 
   fetchGenres(): Observable<Genre[]>{
-    return this.http.get<Genre[]>('/genres');
+    return this.http.get<Genre[]>('/genre');
   }
 }

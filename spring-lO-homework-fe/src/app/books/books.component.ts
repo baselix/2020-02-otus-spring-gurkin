@@ -1,20 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { BookService } from '../service/book.service';
 import { Book } from '../model/book'
+import {
+         PageEvent,
+         MatPaginator,
+         MatTableDataSource,
+       } from '@angular/material';
 
 @Component({
   selector: 'books',
   templateUrl: './books.component.html',
   styleUrls: ['./books.component.css']
 })
-export class BooksComponent implements OnInit {
-  books: Book[];
-
+export class BooksComponent implements AfterViewInit, OnInit {
   constructor(private bookService: BookService){}
 
+  displayedColumns = ['id', 'title', 'edit', 'delete'];
+
+  @ViewChild('paginator') paginator: MatPaginator;
+  public dataSource = new MatTableDataSource();
+
   ngOnInit(){
-    this.bookService.fetchBooks().subscribe((booksList: Book[]) => {
-      this.books = booksList;
+    this.bookService.fetchBooks().subscribe(res => {
+      this.dataSource.data = res;
     });
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  getNext(event: PageEvent) {
+    let offset = event.pageSize * event.pageIndex;
   }
 }

@@ -8,7 +8,7 @@ import ru.gurkin.spring.library.service.BookService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/books")
+@RequestMapping("/book")
 public class BookController {
 
     private BookService service;

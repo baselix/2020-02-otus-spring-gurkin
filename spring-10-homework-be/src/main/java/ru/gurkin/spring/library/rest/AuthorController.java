@@ -8,7 +8,7 @@ import ru.gurkin.spring.library.service.AuthorService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/authors")
+@RequestMapping("/author")
 public class AuthorController {
 
     private AuthorService service;

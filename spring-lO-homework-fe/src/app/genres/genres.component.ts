@@ -1,20 +1,36 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { GenreService } from '../service/genre.service';
 import { Genre } from '../model/genre'
+import {
+         PageEvent,
+         MatPaginator,
+         MatTableDataSource,
+       } from '@angular/material';
 
 @Component({
-  selector: 'authors',
+  selector: 'genress',
   templateUrl: './genres.component.html',
   styleUrls: ['./genres.component.css']
 })
-export class GenresComponent implements OnInit {
-  genres: Genre[];
-
+export class GenresComponent implements AfterViewInit, OnInit {
   constructor(private genreService: GenreService){}
 
+  displayedColumns = ['id', 'title', 'edit', 'delete'];
+
+  @ViewChild('paginator') paginator: MatPaginator;
+  public dataSource = new MatTableDataSource();
+
   ngOnInit(){
-    this.genreService.fetchGenres().subscribe((genresList: Genre[]) => {
-      this.genres = genresList;
+    this.genreService.fetchGenres().subscribe(res => {
+      this.dataSource.data = res;
     });
+  }
+
+  ngAfterViewInit() {
+    this.dataSource.paginator = this.paginator;
+  }
+
+  getNext(event: PageEvent) {
+    let offset = event.pageSize * event.pageIndex;
   }
 }

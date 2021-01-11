@@ -8,6 +8,6 @@ export class BookService {
   constructor(private http: HttpClient) {}
 
   fetchBooks(): Observable<Book[]>{
-    return this.http.get<Book[]>('/books');
+    return this.http.get<Book[]>('/book');
   }
 }

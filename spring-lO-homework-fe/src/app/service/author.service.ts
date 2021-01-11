@@ -8,6 +8,6 @@ export class AuthorService {
   constructor(private http: HttpClient) {}
 
   fetchAuthors(): Observable<Author[]>{
-    return this.http.get<Author[]>('/authors');
+    return this.http.get<Author[]>('/author');
   }
 }
