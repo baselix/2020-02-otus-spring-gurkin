@@ -1,6 +1,5 @@
 import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { GenreService } from '../service/genre.service';
-import { Genre } from '../model/genre'
 import {
          PageEvent,
          MatPaginator,
@@ -28,9 +27,5 @@ export class GenresComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-  }
-
-  getNext(event: PageEvent) {
-    let offset = event.pageSize * event.pageIndex;
   }
 }

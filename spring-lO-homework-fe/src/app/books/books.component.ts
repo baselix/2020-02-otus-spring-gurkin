@@ -1,6 +1,5 @@
 import { Component, ViewChild, AfterViewInit, OnInit } from '@angular/core';
 import { BookService } from '../service/book.service';
-import { Book } from '../model/book'
 import {
          PageEvent,
          MatPaginator,
@@ -28,9 +27,5 @@ export class BooksComponent implements AfterViewInit, OnInit {
 
   ngAfterViewInit() {
     this.dataSource.paginator = this.paginator;
-  }
-
-  getNext(event: PageEvent) {
-    let offset = event.pageSize * event.pageIndex;
   }
 }
