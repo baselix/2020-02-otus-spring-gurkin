@@ -23,13 +23,18 @@ public class GenreController {
         return service.getAll();
     }
 
+    @GetMapping("/{id}")
+    public Genre getById(@PathVariable Long id){
+        return service.getById(id);
+    }
+
     @PostMapping
     public Genre createGenre(@RequestBody Genre genre){
         return service.create(genre);
     }
 
     @PutMapping("/{id}")
-    public Genre updateGenre(@PathVariable String id, @RequestBody Genre genre){
+    public Genre updateGenre(@PathVariable Long id, @RequestBody Genre genre){
         return service.update(genre);
     }
 

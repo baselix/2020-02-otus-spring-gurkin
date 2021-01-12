@@ -3,6 +3,7 @@ package ru.gurkin.spring.library.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.gurkin.spring.library.model.Author;
+import ru.gurkin.spring.library.model.Genre;
 import ru.gurkin.spring.library.service.AuthorService;
 
 import java.util.List;
@@ -21,6 +22,11 @@ public class AuthorController {
     @GetMapping
     public List<Author> getAll(){
         return service.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public Author getById(@PathVariable Long id){
+        return service.getById(id);
     }
 
     @PostMapping

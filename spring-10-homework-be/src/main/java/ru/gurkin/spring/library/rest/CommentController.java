@@ -3,6 +3,7 @@ package ru.gurkin.spring.library.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.gurkin.spring.library.model.Comment;
+import ru.gurkin.spring.library.model.Genre;
 import ru.gurkin.spring.library.service.CommentService;
 
 import java.util.List;
@@ -21,6 +22,11 @@ public class CommentController {
     @GetMapping
     public List<Comment> getAll(){
         return service.getAllComments();
+    }
+
+    @GetMapping("/{id}")
+    public Comment getById(@PathVariable Long id){
+        return service.getById(id);
     }
 
     @PostMapping

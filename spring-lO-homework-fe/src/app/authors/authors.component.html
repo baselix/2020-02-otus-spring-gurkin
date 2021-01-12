@@ -4,7 +4,7 @@
     <div class="container">
       <div fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row"  fxLayoutAlign="space-around center" class="content">
         <div class="blocks">
-          <button button="submit" mat-raised-button color="primary">
+          <button button="submit" mat-raised-button color="primary" (click)="openDialog({})">
             <mat-icon>add</mat-icon> Add Author
           </button>
         </div>
@@ -31,7 +31,7 @@
                 <ng-container matColumnDef="edit">
                   <mat-header-cell *matHeaderCellDef></mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    <a type="button">
+                    <a type="button" (click)="openDialog(element)">
                       <mat-icon class="icon">edit</mat-icon>
                     </a>
                   </mat-cell>
@@ -39,8 +39,7 @@
                 <ng-container matColumnDef="delete">
                   <mat-header-cell *matHeaderCellDef></mat-header-cell>
                   <mat-cell *matCellDef="let element">
-                    <a
-                      type="button">
+                    <a (click)="deleteAuthor(element)" type="button">
                       <mat-icon class="icon">delete</mat-icon>
                     </a>
                   </mat-cell>

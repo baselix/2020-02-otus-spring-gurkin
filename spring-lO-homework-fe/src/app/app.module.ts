@@ -9,10 +9,12 @@ import { AppRouters } from './app.routes';
 import { AppComponent } from './app.component';
 import { AuthorsComponent } from './authors/authors.component';
 import { AuthorComponent } from './author/author.component';
+import { AuthorEditDialogComponent } from './author-edit-dialog/author-edit-dialog.component';
 import { BooksComponent } from './books/books.component';
 import { BookComponent } from './book/book.component';
 import { GenresComponent } from './genres/genres.component';
 import { GenreComponent } from './genre/genre.component';
+import { GenreEditDialogComponent } from './genre-edit-dialog/genre-edit-dialog.component';
 import { CommentComponent } from './comment/comment.component';
 
 import { WelcomeComponent } from './welcome/welcome.component'
@@ -29,10 +31,12 @@ import { GenreService } from './service/genre.service';
     AppComponent,
     AuthorsComponent,
     AuthorComponent,
+    AuthorEditDialogComponent,
     BooksComponent,
     BookComponent,
     GenresComponent,
     GenreComponent,
+    GenreEditDialogComponent,
     CommentComponent,
     WelcomeComponent,
     AboutComponent,
@@ -50,6 +54,10 @@ import { GenreService } from './service/genre.service';
     AuthorService,
     BookService,
     GenreService
+  ],
+  entryComponents: [
+    GenreEditDialogComponent,
+    AuthorEditDialogComponent,
   ],
   bootstrap: [ AppComponent ]
 })

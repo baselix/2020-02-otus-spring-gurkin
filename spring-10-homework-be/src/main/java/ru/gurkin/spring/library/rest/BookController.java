@@ -3,6 +3,7 @@ package ru.gurkin.spring.library.rest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import ru.gurkin.spring.library.model.Book;
+import ru.gurkin.spring.library.model.Genre;
 import ru.gurkin.spring.library.service.BookService;
 
 import java.util.List;
@@ -21,6 +22,11 @@ public class BookController {
     @GetMapping
     public List<Book> getAll(){
         return service.getAll();
+    }
+
+    @GetMapping("/{id}")
+    public Book getById(@PathVariable Long id){
+        return service.getById(id);
     }
 
     @PostMapping
