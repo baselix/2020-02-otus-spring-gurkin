@@ -9,7 +9,7 @@ import {
        } from '@angular/material';
 
 @Component({
-  selector: 'genress',
+  selector: 'genres',
   templateUrl: './genres.component.html',
   styleUrls: ['./genres.component.css']
 })

@@ -1,9 +1,11 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import {MaterialModule} from './material.module';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MaterialModule } from './material.module';
+import { MatChipsModule } from '@angular/material';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms'
+import { FormsModule, ReactiveFormsModule } from '@angular/forms'
+import { MatAutocompleteModule } from '@angular/material/autocomplete';
 
 import { AppRouters } from './app.routes';
 import { AppComponent } from './app.component';
@@ -12,6 +14,7 @@ import { AuthorComponent } from './author/author.component';
 import { AuthorEditDialogComponent } from './author-edit-dialog/author-edit-dialog.component';
 import { BooksComponent } from './books/books.component';
 import { BookComponent } from './book/book.component';
+import { BookEditDialogComponent } from './book-edit-dialog/book-edit-dialog.component';
 import { GenresComponent } from './genres/genres.component';
 import { GenreComponent } from './genre/genre.component';
 import { GenreEditDialogComponent } from './genre-edit-dialog/genre-edit-dialog.component';
@@ -34,6 +37,7 @@ import { GenreService } from './service/genre.service';
     AuthorEditDialogComponent,
     BooksComponent,
     BookComponent,
+    BookEditDialogComponent,
     GenresComponent,
     GenreComponent,
     GenreEditDialogComponent,
@@ -48,16 +52,20 @@ import { GenreService } from './service/genre.service';
     MaterialModule,
     HttpClientModule,
     FormsModule,
-    AppRouters
+    ReactiveFormsModule,
+    AppRouters,
+    MatChipsModule,
+    MatAutocompleteModule,
   ],
   providers: [
     AuthorService,
     BookService,
-    GenreService
+    GenreService,
   ],
   entryComponents: [
     GenreEditDialogComponent,
     AuthorEditDialogComponent,
+    BookEditDialogComponent,
   ],
   bootstrap: [ AppComponent ]
 })

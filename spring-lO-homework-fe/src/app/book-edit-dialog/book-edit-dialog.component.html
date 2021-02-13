@@ -1,0 +1,40 @@
+<h1 mat-dialog-title *ngIf="!isAdd">Edit Book</h1>
+<h1 mat-dialog-title *ngIf="isAdd">Add Book</h1>
+<div mat-dialog-content>
+  <form class="example-form" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput placeholder="Book Title" type="text" required [(ngModel)]="book.title" name="title">
+    </mat-form-field>
+    <mat-form-field class="example-chip-list"  required="true">
+      <mat-label>Authors</mat-label>
+      <mat-chip-list #chipList aria-label="Author selection">
+        <mat-chip
+          *ngFor="let author of book.authors"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="remove(author)">
+          {{author.id }} {{ author.name}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="add author..."
+          #authorInput
+          [formControl]="authorCtrl"
+          [matAutocomplete]="auto"
+          [matChipInputFor]="chipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="add($event)">
+      </mat-chip-list>
+      <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+        <mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
+          {{author.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button type="submit" color="primary">Save</button>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button class="close" (click)="onNoClick()" color="warn">Cancel</button>
+</div>
