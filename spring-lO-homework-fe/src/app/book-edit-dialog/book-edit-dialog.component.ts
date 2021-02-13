@@ -31,7 +31,7 @@ export class BookEditDialogComponent {
   allAuthors: Author[] = [];
 
   @ViewChild('authorInput') authorInput: ElementRef;
-  @ViewChild('auto') matAutocomplete: MatAutocomplete;
+  @ViewChild('autoAuthor') authorAutocomplete: MatAutocomplete;
 
   constructor(
     private bookService: BookService,
@@ -45,7 +45,7 @@ export class BookEditDialogComponent {
 
     this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
           startWith(null),
-          map((authorName: string | null) => authorName ? this._filter(authorName) : this.allAuthors.slice()));
+          map((authorName: string | null) => authorName ? this._filterAuthors(authorName) : this.allAuthors.slice()));
   }
 
   onNoClick(): void {
@@ -61,7 +61,7 @@ export class BookEditDialogComponent {
     this.dialogRef.close();
   }
 
-  add(event: MatChipInputEvent): void {
+  addAuthor(event: MatChipInputEvent): void {
     const input = event.input;
     const value = event.value;
 
@@ -78,7 +78,7 @@ export class BookEditDialogComponent {
     this.authorCtrl.setValue(null);
   }
 
-  remove(author: Author): void {
+  removeAuthor(author: Author): void {
     const index = this.book.authors.indexOf(author);
 
     if (index >= 0) {
@@ -86,13 +86,13 @@ export class BookEditDialogComponent {
     }
   }
 
-  selected(event: MatAutocompleteSelectedEvent): void {
+  selectedAuthor(event: MatAutocompleteSelectedEvent): void {
     this.book.authors.push(event.option.value);
     this.authorInput.nativeElement.value = '';
     this.authorCtrl.setValue(null);
   }
 
-  private _filter(value: string | Author): Author[] {
+  private _filterAuthors(value: string | Author): Author[] {
     var filterValue;
     if(typeof value === 'string'){
       filterValue = value.toLowerCase();
