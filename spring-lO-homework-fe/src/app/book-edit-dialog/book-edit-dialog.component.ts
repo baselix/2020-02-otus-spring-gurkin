@@ -59,11 +59,37 @@ export class BookEditDialogComponent {
 
     this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
           startWith(null),
-          map((authorName: string | null) => authorName ? this._filterAuthors(authorName) : this.allAuthors.slice()));
+          map((authorName: string | null) => authorName ? this._filterAuthors(authorName) : this.getAllAuthors()));
 
     this.filteredGenres = this.genreCtrl.valueChanges.pipe(
           startWith(null),
-          map((genreTitle: string | null) => genreTitle ? this._filterGenres(genreTitle) : this.allGenres.slice()));
+          map((genreTitle: string | null) => genreTitle ? this._filterGenres(genreTitle) : this.getAllGenres()));
+  }
+
+  getAllAuthors(): Author[]{
+    return this.allAuthors.filter(value => {
+      var isFound = true;
+      for(var i = 0; i < this.book.authors.length; i++){
+        var author = this.book.authors[i];
+        if(author.id == value.id && author.name == value.name){
+          isFound = false;
+        }
+      }
+      return isFound;
+    }).slice();
+  }
+
+  getAllGenres(): Genre[]{
+    return this.allGenres.filter(value => {
+      var isFound = true;
+      for(var i = 0; i < this.book.genres.length; i++){
+        var genre = this.book.genres[i];
+        if(genre.id == value.id && genre.title == value.title){
+          isFound = false;
+        }
+      }
+      return isFound;
+    }).slice();
   }
 
   onNoClick(): void {
@@ -149,7 +175,7 @@ export class BookEditDialogComponent {
       filterValue = value.name.toLowerCase();
     }
 
-    return this.allAuthors.filter(author => author.name.toLowerCase().indexOf(filterValue) === 0);
+    return this.getAllAuthors().filter(author => author.name.toLowerCase().indexOf(filterValue) === 0);
   }
 
   private _filterGenres(value: string | Genre): Genre[] {
@@ -160,6 +186,6 @@ export class BookEditDialogComponent {
       filterValue = value.title.toLowerCase();
     }
 
-    return this.allGenres.filter(genre => genre.title.toLowerCase().indexOf(filterValue) === 0);
+    return this.getAllGenres().filter(genre => genre.title.toLowerCase().indexOf(filterValue) === 0);
   }
 }
