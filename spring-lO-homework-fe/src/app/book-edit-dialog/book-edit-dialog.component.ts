@@ -8,7 +8,9 @@ import { Observable } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { BookService } from '../service/book.service';
 import { AuthorService } from '../service/author.service';
+import { GenreService } from '../service/genre.service';
 import { Author } from '../model/author';
+import { Genre } from '../model/genre';
 
 @Component({
   selector: 'book-edit-dialog',
@@ -30,12 +32,20 @@ export class BookEditDialogComponent {
   filteredAuthors: Observable<Author[]>;
   allAuthors: Author[] = [];
 
+  genreCtrl = new FormControl();
+  filteredGenres: Observable<Genre[]>;
+  allGenres: Genre[] = [];
+
   @ViewChild('authorInput') authorInput: ElementRef;
   @ViewChild('autoAuthor') authorAutocomplete: MatAutocomplete;
+
+  @ViewChild('genreInput') genreInput: ElementRef;
+  @ViewChild('autoGenre') genreAutocomplete: MatAutocomplete;
 
   constructor(
     private bookService: BookService,
     private authorService: AuthorService,
+    private genreService: GenreService,
     @Inject(MAT_DIALOG_DATA) public data: any,
     public dialogRef: MatDialogRef<BookEditDialogComponent>
   ){
@@ -43,9 +53,17 @@ export class BookEditDialogComponent {
               this.allAuthors = res;
             });
 
+    this.genreService.fetchGenres().subscribe(res => {
+              this.allGenres = res;
+            });
+
     this.filteredAuthors = this.authorCtrl.valueChanges.pipe(
           startWith(null),
           map((authorName: string | null) => authorName ? this._filterAuthors(authorName) : this.allAuthors.slice()));
+
+    this.filteredGenres = this.genreCtrl.valueChanges.pipe(
+          startWith(null),
+          map((genreTitle: string | null) => genreTitle ? this._filterGenres(genreTitle) : this.allGenres.slice()));
   }
 
   onNoClick(): void {
@@ -78,6 +96,23 @@ export class BookEditDialogComponent {
     this.authorCtrl.setValue(null);
   }
 
+  addGenre(event: MatChipInputEvent): void {
+    const input = event.input;
+    const value = event.value;
+
+    // Add our author
+    if (typeof value !== 'string') {
+      this.book.genres.push(value);
+    }
+
+    // Reset the input value
+    if (input) {
+      input.value = '';
+    }
+
+    this.genreCtrl.setValue(null);
+  }
+
   removeAuthor(author: Author): void {
     const index = this.book.authors.indexOf(author);
 
@@ -86,10 +121,24 @@ export class BookEditDialogComponent {
     }
   }
 
+  removeGenre(genre: Genre): void {
+    const index = this.book.genres.indexOf(genre);
+
+    if (index >= 0) {
+      this.book.genres.splice(index, 1);
+    }
+  }
+
   selectedAuthor(event: MatAutocompleteSelectedEvent): void {
     this.book.authors.push(event.option.value);
     this.authorInput.nativeElement.value = '';
     this.authorCtrl.setValue(null);
+  }
+
+  selectedGenre(event: MatAutocompleteSelectedEvent): void {
+    this.book.genres.push(event.option.value);
+    this.genreInput.nativeElement.value = '';
+    this.genreCtrl.setValue(null);
   }
 
   private _filterAuthors(value: string | Author): Author[] {
@@ -101,5 +150,16 @@ export class BookEditDialogComponent {
     }
 
     return this.allAuthors.filter(author => author.name.toLowerCase().indexOf(filterValue) === 0);
+  }
+
+  private _filterGenres(value: string | Genre): Genre[] {
+    var filterValue;
+    if(typeof value === 'string'){
+      filterValue = value.toLowerCase();
+    }else{
+      filterValue = value.title.toLowerCase();
+    }
+
+    return this.allGenres.filter(genre => genre.title.toLowerCase().indexOf(filterValue) === 0);
   }
 }

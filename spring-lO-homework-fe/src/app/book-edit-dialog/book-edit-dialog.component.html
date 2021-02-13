@@ -31,6 +31,33 @@
         </mat-option>
       </mat-autocomplete>
     </mat-form-field>
+
+    <mat-form-field class="example-chip-list"  required="true">
+      <mat-label>Genres</mat-label>
+      <mat-chip-list #genresChipList aria-label="Genre selection">
+        <mat-chip
+          *ngFor="let genre of book.genres"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="removeGenre(genre)">
+          {{genre.id }} {{ genre.title}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="add genre..."
+          #genreInput
+          [formControl]="genreCtrl"
+          [matAutocomplete]="autoGenre"
+          [matChipInputFor]="genresChipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="addGenre($event)">
+      </mat-chip-list>
+      <mat-autocomplete #autoGenre="matAutocomplete" (optionSelected)="selectedGenre($event)">
+        <mat-option *ngFor="let genre of filteredGenres | async" [value]="genre">
+          {{genre.title}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
     <br>
     <button mat-raised-button type="submit" color="primary">Save</button>
   </form>
