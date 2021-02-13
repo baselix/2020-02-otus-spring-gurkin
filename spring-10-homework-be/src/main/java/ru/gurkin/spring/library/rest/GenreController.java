@@ -8,7 +8,7 @@ import ru.gurkin.spring.library.service.GenreService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/genre")
+@RequestMapping("/genres")
 public class GenreController {
 
     private GenreService service;

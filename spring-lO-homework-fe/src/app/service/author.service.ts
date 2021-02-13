@@ -8,23 +8,23 @@ export class AuthorService {
   constructor(private http: HttpClient) {}
 
   fetchAuthors(): Observable<Author[]>{
-    return this.http.get<Author[]>('/author');
+    return this.http.get<Author[]>('/authors');
   }
 
   fetchAuthor(id: number): Observable<Author>{
-      return this.http.get<Author>('/author/' + id);
+      return this.http.get<Author>('/authors/' + id);
   }
 
   createAuthor(author: Author): Observable<Author>{
-    return this.http.post<Author>('/author', author, {});
+    return this.http.post<Author>('/authors', author, {});
   }
 
   updateAuthor(author: Author): Observable<Author> {
-    return this.http.put<Author>('/author/' + author.id, author, {});
+    return this.http.put<Author>('/authors/' + author.id, author, {});
   }
 
   deleteAuthor(id: number): Observable<any> {
-  const url = `/author/${id}`
+  const url = `/authors/${id}`
     console.log("delete author " + id)
     return this.http.delete(url, {})
   }

@@ -9,7 +9,7 @@ import ru.gurkin.spring.library.service.BookService;
 import java.util.List;
 
 @RestController
-@RequestMapping("/book")
+@RequestMapping("/books")
 public class BookController {
 
     private BookService service;

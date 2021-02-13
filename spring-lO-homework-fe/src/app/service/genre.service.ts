@@ -8,23 +8,23 @@ export class GenreService {
   constructor(private http: HttpClient) {}
 
   fetchGenres(): Observable<Genre[]>{
-    return this.http.get<Genre[]>('/genre');
+    return this.http.get<Genre[]>('/genres');
   }
 
   fetchGenre(id: number): Observable<Genre>{
-    return this.http.get<Genre>('/genre/' + id);
+    return this.http.get<Genre>('/genres/' + id);
   }
 
   createGenre(genre: Genre): Observable<Genre>{
-    return this.http.post<Genre>('/genre', genre, {});
+    return this.http.post<Genre>('/genres', genre, {});
   }
 
   updateGenre(genre: Genre): Observable<Genre> {
-    return this.http.put<Genre>('/genre/' + genre.id, genre, {});
+    return this.http.put<Genre>('/genres/' + genre.id, genre, {});
   }
 
   deleteGenre(id: number): Observable<any> {
-  const url = `/genre/${id}`
+  const url = `/genres/${id}`
     console.log("delete genre " + id)
     return this.http.delete(url, {})
   }
