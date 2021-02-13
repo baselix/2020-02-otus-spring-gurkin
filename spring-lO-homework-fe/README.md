@@ -1,27 +1,19 @@
-# SpringLOHomeworkFe
+# spring-10-homework-fe - домашнее задание №10
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.7.4.
+Переписать приложение с использованием AJAX и REST-контроллеров
 
-## Development server
+Цель: использовать Spring MVC для разработки современных AJAX/SPA приложений c помощью Spring MVC
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Результат: современное приложение на стеке Spring
 
-## Code scaffolding
+Описание задания: Домашнее задание выполняется переписыванием предыдущего на JPA.
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+Требования:
+1. Переписать приложение с классических View на AJAX архитектуру и REST-контроллеры.
+2. Минимум: получение одной сущности и отображение её на странице с помощью XmlHttpRequest, fetch api или jQuery
+3. Опционально максимум: полноценное SPA приложение на React/Vue/Angular, только REST-контроллеры.
 
-## Build
-
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `-prod` flag for a production build.
-
-## Running unit tests
-
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
-
-## Running end-to-end tests
-
-Run `ng e2e` to execute the end-to-end tests via [Protractor](http://www.protractortest.org/).
-
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
+Описание решения:
+1. backend и frontend выполнены в виде двух различных приложений.
+2. backend содержит только rest-контроллеры
+3. frontend оформлен в виде отдельного spa приложения на angular с использованием proxy (no CORS) 
