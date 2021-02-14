@@ -1,0 +1,23 @@
+spring:
+  profiles: "prod"
+  data:
+    mongodb:
+      database: journal
+      host: localhost
+      port: 27017
+
+---
+spring:
+  profiles: "dev"
+  data:
+    mongodb:
+      database: journal
+      host: localhost
+      port: 27017
+
+---
+spring:
+  profiles: "test"
+  data:
+    mongodb:
+      database: journal
