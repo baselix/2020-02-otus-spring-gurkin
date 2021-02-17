@@ -1,0 +1,67 @@
+<h1 mat-dialog-title *ngIf="!isAdd">Edit Book</h1>
+<h1 mat-dialog-title *ngIf="isAdd">Add Book</h1>
+<div mat-dialog-content>
+  <form class="example-form" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <input matInput placeholder="Book Title" type="text" required [(ngModel)]="book.title" name="title">
+    </mat-form-field>
+    <mat-form-field class="example-chip-list"  required="true">
+      <mat-label>Authors</mat-label>
+      <mat-chip-list #authorsChipList aria-label="Author selection">
+        <mat-chip
+          *ngFor="let author of book.authors"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="removeAuthor(author)">
+          {{author.id }} {{ author.name}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="add author..."
+          #authorInput
+          [formControl]="authorCtrl"
+          [matAutocomplete]="autoAuthor"
+          [matChipInputFor]="authorsChipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="addAuthor($event)">
+      </mat-chip-list>
+      <mat-autocomplete #autoAuthor="matAutocomplete" (optionSelected)="selectedAuthor($event)">
+        <mat-option *ngFor="let author of filteredAuthors | async" [value]="author">
+          {{author.name}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+
+    <mat-form-field class="example-chip-list"  required="true">
+      <mat-label>Genres</mat-label>
+      <mat-chip-list #genresChipList aria-label="Genre selection">
+        <mat-chip
+          *ngFor="let genre of book.genres"
+          [selectable]="selectable"
+          [removable]="removable"
+          (removed)="removeGenre(genre)">
+          {{genre.id }} {{ genre.title}}
+          <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+        </mat-chip>
+        <input
+          placeholder="add genre..."
+          #genreInput
+          [formControl]="genreCtrl"
+          [matAutocomplete]="autoGenre"
+          [matChipInputFor]="genresChipList"
+          [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+          (matChipInputTokenEnd)="addGenre($event)">
+      </mat-chip-list>
+      <mat-autocomplete #autoGenre="matAutocomplete" (optionSelected)="selectedGenre($event)">
+        <mat-option *ngFor="let genre of filteredGenres | async" [value]="genre">
+          {{genre.title}}
+        </mat-option>
+      </mat-autocomplete>
+    </mat-form-field>
+    <br>
+    <button mat-raised-button type="submit" color="primary">Save</button>
+  </form>
+</div>
+<div mat-dialog-actions>
+  <button mat-raised-button class="close" (click)="onNoClick()" color="warn">Cancel</button>
+</div>

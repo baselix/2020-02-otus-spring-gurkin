@@ -1,0 +1,29 @@
+<h2 style="text-align:center">Select page:</h2>
+<div class="row-container">
+  <div fxLayout="column" fxLayoutGap="20px" fxLayout.gt-md="row"  fxLayoutAlign="space-around center" class="content">
+    <div class="blocks">
+      <button class="fixed-button" [routerLink]="['/authors']" button="authors" mat-raised-button color="primary">
+        <mat-icon>face</mat-icon> Authors
+      </button>
+    </div>
+    <div class="blocks">
+      <button class="fixed-button" [routerLink]="['/genres']" button="genres" mat-raised-button color="primary">
+        <mat-icon>subject</mat-icon> Genres
+      </button>
+    </div>
+    <div class="blocks">
+      <button class="fixed-button" [routerLink]="['/books']" button="books" mat-raised-button color="primary">
+        <mat-icon>library_books</mat-icon> Books
+      </button>
+    </div>
+    <div class="blocks">
+      <button class="fixed-button" [routerLink]="['/about']" button="about" mat-raised-button color="primary">
+        <mat-icon>info</mat-icon> About
+      </button>
+    </div>
+  </div>
+</div>
+<br>
+<div align="center">
+  <img src="./assets/books.png">
+</div>
