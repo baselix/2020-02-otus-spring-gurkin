@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>Edit post</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Person edition -->
+<form id="edit-form" th:action="@{/posts/{id}(id=${post.id})}" th:method="post" action="edit.html">
+    <h1>Post:</h1>
+
+    <div class="row">
+        <label for="id-input">ID:</label>
+        <input id="id-input" type="text" readonly="readonly" th:value="${post.id}" value="1"/>
+    </div>
+
+    <div class="row">
+        <label for="holder-input">Title:</label>
+        <input id="holder-input" name="title" type="text" th:value="${post.title}" value="Title"/>
+    </div>
+
+    <div class="row">
+        <label for="text-input">Body:</label>
+        <textarea rows = "20" cols = "80" id="text-input" name="body" type="textarea" th:field="${post.body}">
+            body
+        </textarea>
+    </div>
+
+    <div class="row">
+        <button type="submit">Save</button>
+    </div>
+</form>
+
+</body>
+</html>
