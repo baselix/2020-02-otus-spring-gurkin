@@ -17,4 +17,7 @@
 
 Описание решения:
 
-1. 
+1. Подключен Spring Boot Actuator
+2. Метрики и healthchecks включены, добавлен logback.xml
+3. Создан собственный DayTimeHealthIndicator, который с 9 до 21 часа возвращает "status": "UP"
+    а в остальное время суток "status": "DOWN"
