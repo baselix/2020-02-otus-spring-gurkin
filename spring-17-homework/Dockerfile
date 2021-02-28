@@ -1,4 +1,10 @@
 FROM openjdk:11-jre-slim
-COPY /target/journal-1.0.0-SNAPSHOT.jar /app/app.jar
+
+ENV PROJECT_DIR=/opt/project
+
+RUN mkdir -p $PROJECT_DIR
+WORKDIR $PROJECT_DIR
+
+COPY /target/journal-1.0.0-SNAPSHOT.jar $PROJECT_DIR
 EXPOSE 8080
-ENTRYPOINT ["java", "-jar", "/app/app.jar"]
+ENTRYPOINT ["java", "-jar", "/opt/project/journal-1.0.0-SNAPSHOT.jar"]
