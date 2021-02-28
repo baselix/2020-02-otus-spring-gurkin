@@ -38,7 +38,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
                 .and()
                 .authorizeRequests().antMatchers( "/posts/**" ).authenticated()
                 .and()
-                .authorizeRequests().antMatchers( "/users/**" ).authenticated()
+                .authorizeRequests().antMatchers( "/users/**" ).hasAuthority("ADMIN")
                 .and()
                 .formLogin()
                 .and()
