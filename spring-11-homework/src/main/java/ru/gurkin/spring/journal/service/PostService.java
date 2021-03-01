@@ -5,15 +5,15 @@ import reactor.core.publisher.Mono;
 import ru.gurkin.spring.journal.model.Post;
 
 public interface PostService {
-	Flux<Post> getAll(Mono<String> userName);
+	Flux<Post> getAll();
 
-	Mono<Post> getById(String id, Mono<String> userName);
+	Mono<Post> getById(String id);
 
-	Mono<Post> create(Post post, Mono<String> userName);
+	Mono<Post> create(Post post);
 
-	Mono<Post> update(Post post, Mono<String> userName);
+	Mono<Post> update(Post post);
 
 	void delete(String id);
 
-	Flux<Post> search(String titleFilter, Mono<String> userName);
+	Flux<Post> search(String titleFilter);
 }
