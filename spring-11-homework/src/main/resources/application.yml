@@ -1,0 +1,19 @@
+spring:
+  profiles: "prod"
+  data:
+    mongodb:
+      uri: ${MONGO_URL}
+
+---
+spring:
+  profiles: "dev"
+  data:
+    mongodb:
+      uri: ${MONGO_URL}
+
+---
+spring:
+  profiles: "test"
+  data:
+    mongodb:
+      database: journal

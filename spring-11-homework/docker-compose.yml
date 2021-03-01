@@ -1,0 +1,12 @@
+version: '3'
+services:
+  mongo:
+    image: "mongo"
+    volumes:
+      - /D/MongoDB/db:/data/db
+    ports:
+      - "27017-27019:27017-27019"
+    networks:
+      - nw
+networks:
+  nw:
