@@ -20,3 +20,4 @@ insert into book_genre (`book_id`, `genre_id`) values (3, 3);
 insert into book_author (`book_id`, `author_id`) values (4, 3);
 insert into book_author (`book_id`, `author_id`) values (4, 4);
 insert into book_genre (`book_id`, `genre_id`) values (4, 4);
+insert into comments (id, `book_id`, `message`) values (1, 1, 'comment 1')

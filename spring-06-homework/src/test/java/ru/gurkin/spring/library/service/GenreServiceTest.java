@@ -24,7 +24,7 @@ import static ru.gurkin.spring.library.model.ErrorConstants.*;
 		ScriptShellApplicationRunner.SPRING_SHELL_SCRIPT_ENABLED + "=false" })
 @ActiveProfiles("test")
 @DirtiesContext
-@DisplayName("Класс сервиса для жанра корректно ")
+@DisplayName("Класс сервиса для жанров корректно ")
 class GenreServiceTest {
 
 	@MockBean
