@@ -5,7 +5,6 @@ import com.google.common.collect.Lists;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.shell.Availability;
 import org.springframework.shell.standard.*;
-import org.springframework.transaction.annotation.Transactional;
 import ru.gurkin.spring.library.model.Author;
 import ru.gurkin.spring.library.model.Book;
 import ru.gurkin.spring.library.model.Comment;
@@ -115,7 +114,6 @@ public class ShellCommandsHolder {
 		}
 	}
 
-	@Transactional
 	@ShellMethod(key = COMMAND_SHOW_BOOKS, value = "Show all books", group = BOOK_GROUP)
 	public List<Book> showBooks() {
 		return bookService.getAll();
