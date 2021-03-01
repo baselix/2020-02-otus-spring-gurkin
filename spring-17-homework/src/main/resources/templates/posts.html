@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <title>List of all posts</title>
+    <style type="text/css">
+        body {
+            padding: 50px;
+        }
+
+        .persons, .persons td {
+            border: 1px solid lightgray;
+            padding: 5px;
+        }
+
+        label {
+            display: inline-block;
+            width: 100px;
+        }
+
+        input:read-only {
+            background: lightgray;
+        }
+
+        .row {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+
+<script th:inline="javascript">
+    function sendDelete(url) {
+        var xhttp = new XMLHttpRequest();
+        xhttp.open("DELETE", url, true);
+        xhttp.onload = function () {
+            let responseURL = xhttp.responseURL;
+            console.log("Redirecting to:", responseURL);
+            window.location.replace(responseURL);
+        };
+        xhttp.send();
+    }
+</script>
+
+<body>
+<!-- Person edition -->
+<form id="edit-form" th:action="@{/posts}" th:method="post" action="edit.html">
+    <h1>Add post:</h1>
+
+    <div class="row">
+        <label for="holder-input">Title:</label>
+        <input id="holder-input" name="title" type="text" value=""/>
+    </div>
+
+    <div class="row">
+        <label for="text-input">Body:</label>
+        <textarea rows = "20" cols = "80" id="text-input" name="body" type="textarea"></textarea>
+    </div>
+
+    <div class="row">
+        <button type="submit">Save</button>
+    </div>
+</form>
+
+<h1>All Posts:</h1>
+
+<table class="posts">
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Title</th>
+        <th>Action</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="post : ${posts}">
+        <td th:text="${post.id}">1</td>
+        <td th:text="${post.title}">Title</td>
+        <td>
+            <a th:href="@{/posts/{id}(id=${post.id})}" href="edit.html">Edit</a>/
+            <a type="button" th:with="url = @{/posts/{id}(id=${post.id})}" th:onclick="sendDelete([[${url}]])">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>
