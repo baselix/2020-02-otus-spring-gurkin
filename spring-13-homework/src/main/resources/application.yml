@@ -1,0 +1,57 @@
+spring:
+  profiles: "prod"
+  data:
+    mongodb:
+      database: journal
+      host: localhost
+      port: 27017
+  datasource:
+    initialize: true
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=- 1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+---
+spring:
+  profiles: "dev"
+  data:
+    mongodb:
+      database: journal
+      host: localhost
+      port: 27017
+  datasource:
+    initialize: true
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=- 1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: none
+---
+spring:
+  profiles: "test"
+  data:
+    mongodb:
+      database: journal
+  datasource:
+    initialize: true
+    url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=- 1;DB_CLOSE_ON_EXIT=FALSE
+    driverClassName: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: none
